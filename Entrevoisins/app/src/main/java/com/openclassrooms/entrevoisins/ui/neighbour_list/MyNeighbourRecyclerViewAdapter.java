@@ -27,6 +27,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
 
     public MyNeighbourRecyclerViewAdapter(List<Neighbour> items) {
         mNeighbours = items;
+
     }
 
     @Override
@@ -73,7 +74,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
     }
     // get the user clicked
 
-    public  Neighbour getUser(int position){
-        return this.mNeighbours.get(position);
+     Neighbour getUser(int position){
+        return mNeighbours.get(position);
     }
 }
