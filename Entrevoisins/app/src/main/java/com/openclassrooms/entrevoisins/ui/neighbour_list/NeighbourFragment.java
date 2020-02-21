@@ -19,19 +19,20 @@ import com.openclassrooms.entrevoisins.events.ItemClickSupport;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
+import static com.openclassrooms.entrevoisins.service.DummyNeighbourGenerator.DUMMY_NEIGHBOURS;
+
 
 public class NeighbourFragment extends Fragment {
 
     private NeighbourApiService mApiService;
-    private List<Neighbour> mNeighbours;
+    private List<Neighbour> mNeighbours2;
     private RecyclerView mRecyclerView;
-    private MyNeighbourRecyclerViewAdapter  myNeighbourRecyclerViewAdapter =new MyNeighbourRecyclerViewAdapter(mNeighbours);
+    private MyNeighbourRecyclerViewAdapter myNeighbourRecyclerViewAdapter = new MyNeighbourRecyclerViewAdapter(DUMMY_NEIGHBOURS);
 
 
     /**
@@ -67,8 +68,8 @@ public class NeighbourFragment extends Fragment {
      * Init the List of neighbours
      */
     private void initList() {
-        mNeighbours = mApiService.getNeighbours();
-        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+        mNeighbours2 = mApiService.getNeighbours();
+        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours2));
     }
 
     @Override
