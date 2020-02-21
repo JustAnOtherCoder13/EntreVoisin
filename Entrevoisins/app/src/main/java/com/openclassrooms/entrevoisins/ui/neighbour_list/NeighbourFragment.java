@@ -28,13 +28,16 @@ import static com.openclassrooms.entrevoisins.di.DI.getNeighbourApiService;
 
 public class NeighbourFragment extends Fragment {
 
-    //sortis de onCreate l'initialisation mApiService et mNeighbours2.
+    //get out of onCreate initialization of mApiService
     private NeighbourApiService mApiService = getNeighbourApiService();
+
+    //get out of initList initialization of mNeighbours2
     private List<Neighbour> mNeighbours2 = mApiService.getNeighbours();
 
-    private RecyclerView mRecyclerView;
+    //instantiate MyNeighbourRecyclerViewAdapter and pass mNeighbours2 list in parameter
     private MyNeighbourRecyclerViewAdapter myNeighbourRecyclerViewAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours2);
 
+    private RecyclerView mRecyclerView;
     /**
      * Create and return a new instance
      *
@@ -61,6 +64,8 @@ public class NeighbourFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         initList();
+
+        //use method to configure OnClickRecyclerView
         this.configureOnClickRecyclerView();
         return view;
     }
