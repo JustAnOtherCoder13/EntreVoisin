@@ -13,7 +13,6 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.openclassrooms.entrevoisins.R;
-import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
 import com.openclassrooms.entrevoisins.events.ItemClickSupport;
 import com.openclassrooms.entrevoisins.model.Neighbour;
@@ -24,16 +23,17 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
-import static com.openclassrooms.entrevoisins.service.DummyNeighbourGenerator.DUMMY_NEIGHBOURS;
+import static com.openclassrooms.entrevoisins.di.DI.getNeighbourApiService;
 
 
 public class NeighbourFragment extends Fragment {
 
-    private NeighbourApiService mApiService;
-    private List<Neighbour> mNeighbours2;
-    private RecyclerView mRecyclerView;
-    private MyNeighbourRecyclerViewAdapter myNeighbourRecyclerViewAdapter = new MyNeighbourRecyclerViewAdapter(DUMMY_NEIGHBOURS);
+    //sortis de onCreate l'initialisation mApiService et mNeighbours2.
+    private NeighbourApiService mApiService = getNeighbourApiService();
+    private List<Neighbour> mNeighbours2 = mApiService.getNeighbours();
 
+    private RecyclerView mRecyclerView;
+    private MyNeighbourRecyclerViewAdapter myNeighbourRecyclerViewAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours2);
 
     /**
      * Create and return a new instance
@@ -42,13 +42,14 @@ public class NeighbourFragment extends Fragment {
      */
     public static NeighbourFragment newInstance() {
         NeighbourFragment fragment = new NeighbourFragment();
+
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApiService = DI.getNeighbourApiService();
+
     }
 
     @Override
@@ -68,9 +69,10 @@ public class NeighbourFragment extends Fragment {
      * Init the List of neighbours
      */
     private void initList() {
-        mNeighbours2 = mApiService.getNeighbours();
+
         mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours2));
     }
+
 
     @Override
     public void onStart() {
@@ -97,6 +99,7 @@ public class NeighbourFragment extends Fragment {
 
     //configure click on recycler view
     private void configureOnClickRecyclerView() {
+
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
@@ -108,3 +111,5 @@ public class NeighbourFragment extends Fragment {
                 });
     }
 }
+
+
