@@ -4,12 +4,14 @@ package com.openclassrooms.entrevoisins.ui.neighbour_list;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.openclassrooms.entrevoisins.R;
@@ -22,6 +24,8 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
+
+import butterknife.BindView;
 
 import static com.openclassrooms.entrevoisins.di.DI.getNeighbourApiService;
 
@@ -38,6 +42,9 @@ public class NeighbourFragment extends Fragment {
     private MyNeighbourRecyclerViewAdapter myNeighbourRecyclerViewAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours2);
 
     private RecyclerView mRecyclerView;
+
+    @BindView(R.id.view_fragment_detail)
+    FrameLayout mFragmentDetail;
     /**
      * Create and return a new instance
      *
@@ -64,6 +71,7 @@ public class NeighbourFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         initList();
+
 
         //use method to configure OnClickRecyclerView
         this.configureOnClickRecyclerView();
@@ -112,6 +120,10 @@ public class NeighbourFragment extends Fragment {
                         Neighbour neighbour = myNeighbourRecyclerViewAdapter.getUser(position);
                         //- Show result in a Toast
                         Toast.makeText(getContext(), "You clicked on user : "+neighbour.getName(), Toast.LENGTH_SHORT).show();
+
+                        Fragment mDetailFragment =  NeighbourFragmentDetail.newInstance();
+                        requireFragmentManager().beginTransaction().add(R.id.view_fragment_detail, mDetailFragment).addToBackStack(null).commit();
+
                     }
                 });
     }
