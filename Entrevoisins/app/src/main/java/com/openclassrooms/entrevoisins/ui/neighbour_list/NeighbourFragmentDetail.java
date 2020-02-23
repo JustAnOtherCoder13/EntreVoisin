@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +15,7 @@ import com.openclassrooms.entrevoisins.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 
 public class NeighbourFragmentDetail extends Fragment {
@@ -33,10 +35,12 @@ public class NeighbourFragmentDetail extends Fragment {
     @BindView (R.id.item_list_presentation_about_me_txt)
      TextView mItemListPresentationAboutMe;
 
-    @BindView (R.id.item_list_delete_button)
-     Button mReturnButton;
+    @BindView (R.id.item_list_return_button)
+    ImageButton mReturnButton;
     @BindView (R.id.item_list_favorite_button)
-     Button mFavoriteButton;
+    ImageButton mFavoriteButton;
+
+    private Unbinder unbinder;
 
 
 
@@ -57,7 +61,7 @@ public class NeighbourFragmentDetail extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_neighbour_detail, container, false);
-        ButterKnife.bind(this,view);
+        unbinder = ButterKnife.bind(this,view);
 
 
         return view;
