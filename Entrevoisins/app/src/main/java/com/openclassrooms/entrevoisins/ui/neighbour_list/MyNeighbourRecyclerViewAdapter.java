@@ -74,7 +74,11 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
     }
     // get the user clicked
     //do an interface ?
-     Neighbour getUser(int position){
-        return mNeighbours.get(position);
+    public  interface NeighbourPosition{
+
+        Neighbour getUser(int position);
+
     }
-}
+
+    }
+

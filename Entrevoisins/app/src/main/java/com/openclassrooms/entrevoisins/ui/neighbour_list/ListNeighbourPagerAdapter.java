@@ -4,6 +4,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import com.openclassrooms.entrevoisins.model.Neighbour;
+
 
 public class ListNeighbourPagerAdapter extends FragmentPagerAdapter {
 
@@ -16,6 +18,7 @@ public class ListNeighbourPagerAdapter extends FragmentPagerAdapter {
      * @param position
      * @return
      */
+    //here to chose witch fragment is used
     @Override
     public Fragment getItem(int position) {
         return NeighbourFragment.newInstance();

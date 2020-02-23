@@ -26,18 +26,12 @@ import java.util.List;
 import static com.openclassrooms.entrevoisins.di.DI.getNeighbourApiService;
 
 
-public class NeighbourFragment extends Fragment {
+public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerViewAdapter.NeighbourPosition {
 
-    //get out of onCreate initialization of mApiService
-    private NeighbourApiService mApiService = getNeighbourApiService();
-
-    //get out of initList initialization of mNeighbours2
-    private List<Neighbour> mNeighbours2 = mApiService.getNeighbours();
-
-    //instantiate MyNeighbourRecyclerViewAdapter and pass mNeighbours2 list in parameter
-    private MyNeighbourRecyclerViewAdapter myNeighbourRecyclerViewAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours2);
-
+    private NeighbourApiService mApiService;
+    private List<Neighbour> mNeighbours;
     private RecyclerView mRecyclerView;
+
     /**
      * Create and return a new instance
      *
@@ -52,7 +46,7 @@ public class NeighbourFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        mApiService = getNeighbourApiService();
     }
 
     @Override
@@ -75,7 +69,8 @@ public class NeighbourFragment extends Fragment {
      */
     private void initList() {
 
-        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours2));
+        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+        mNeighbours = mApiService.getNeighbours();
     }
 
 
@@ -91,6 +86,15 @@ public class NeighbourFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
+    //implement the interface method getUser
+    @Override
+    public Neighbour getUser(int position) {
+
+        return mNeighbours.get(position);
+
+
+    }
+
     /**
      * Fired if the user clicks on a delete button
      *
@@ -103,18 +107,22 @@ public class NeighbourFragment extends Fragment {
     }
 
     //configure click on recycler view
+
     private void configureOnClickRecyclerView() {
 
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        Neighbour neighbour = myNeighbourRecyclerViewAdapter.getUser(position);
+                        Neighbour neighbour = getUser(position);
                         //- Show result in a Toast
-                        Toast.makeText(getContext(), "You clicked on user : "+neighbour.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "You clicked on user : " + neighbour.getName(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
-}
+
+    }
+
+
 
 

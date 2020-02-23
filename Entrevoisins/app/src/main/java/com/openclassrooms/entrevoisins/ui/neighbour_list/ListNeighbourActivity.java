@@ -19,6 +19,8 @@ import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import java.util.List;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -77,21 +79,14 @@ public class ListNeighbourActivity extends AppCompatActivity {
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
     }
 
 
- /*   private R.layout ifClickedDetail (){
-
-        if (myNeighbourRecyclerViewAdapter.getUser() != 0){
-
-            mLayoutToCharge = R.layout.fragment_neighbour_detail;
-
-        }
-
-            mLayoutToCharge= R.layout.activity_list_neighbour;
-
-        return mLayoutToCharge ;
-
-    }*/
 
 }
+
+
+
+
+
