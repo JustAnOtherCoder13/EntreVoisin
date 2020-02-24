@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.openclassrooms.entrevoisins.R;
+import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
 import com.openclassrooms.entrevoisins.events.ItemClickSupport;
 import com.openclassrooms.entrevoisins.model.Neighbour;
@@ -23,30 +24,34 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.util.List;
 
-import static com.openclassrooms.entrevoisins.di.DI.getNeighbourApiService;
 
-
-public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerViewAdapter.NeighbourPosition {
+public  class NeighbourFragment extends Fragment implements MyNeighbourRecyclerViewAdapter.NeighbourPosition {
 
     private NeighbourApiService mApiService;
     private List<Neighbour> mNeighbours;
     private RecyclerView mRecyclerView;
+    private String name;
 
     /**
      * Create and return a new instance
      *
      * @return @{@link NeighbourFragment}
      */
-    public static NeighbourFragment newInstance() {
+    public static NeighbourFragment newInstance(/*String name*/) {
         NeighbourFragment fragment = new NeighbourFragment();
-
+        //Bundle arguments = new Bundle();
+       // arguments.putString("name", name);
+        //fragment.setArguments(arguments);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mApiService = getNeighbourApiService();
+        mApiService = DI.getNeighbourApiService();
+        //Bundle arguments = getArguments();
+       // name = (arguments != null)? arguments.getString("name", "empty"): "empty";
+
     }
 
     @Override
@@ -68,9 +73,9 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
      * Init the List of neighbours
      */
     private void initList() {
+        mNeighbours = mApiService.getNeighbours();
 
         mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
-        mNeighbours = mApiService.getNeighbours();
     }
 
 
@@ -88,7 +93,7 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
 
     //implement the interface method getUser
     @Override
-    public Neighbour getUser(int position) {
+    public  Neighbour getUser(int position) {
 
         return mNeighbours.get(position);
 
@@ -115,13 +120,28 @@ public class NeighbourFragment extends Fragment implements MyNeighbourRecyclerVi
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                         Neighbour neighbour = getUser(position);
+
+                       /* Bundle bundle = new Bundle();
+                        String myMessage = "Stack Overflow is cool!";
+                        bundle.putString("message", myMessage );
+                        NeighbourFragment fragInfo = new NeighbourFragment();
+                        fragInfo.setArguments(bundle);
+                        fragmentManager.beginTransaction()
+                        transaction.replace(R.id., fragInfo);
+                        transaction.commit();*/
+
                         //- Show result in a Toast
                         Toast.makeText(getContext(), "You clicked on user : " + neighbour.getName(), Toast.LENGTH_SHORT).show();
-                    }
+                       }
                 });
-    }
 
     }
+
+    //public  Boolean isItClicked = this.configureOnClickRecyclerView(this);
+
+    }
+
+
 
 
 
