@@ -25,23 +25,22 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.List;
 
 
-public  class NeighbourFragment extends Fragment implements MyNeighbourRecyclerViewAdapter.NeighbourPosition {
+public  class NeighbourFragment extends Fragment {
 
     private NeighbourApiService mApiService;
-    private List<Neighbour> mNeighbours;
+    private  List<Neighbour> mNeighbours;
     private RecyclerView mRecyclerView;
-    private String name;
+   private static final String KEY_POSITION = "position";
+
 
     /**
      * Create and return a new instance
      *
      * @return @{@link NeighbourFragment}
      */
-    public static NeighbourFragment newInstance(/*String name*/) {
+    public static NeighbourFragment newInstance() {
         NeighbourFragment fragment = new NeighbourFragment();
-        //Bundle arguments = new Bundle();
-       // arguments.putString("name", name);
-        //fragment.setArguments(arguments);
+
         return fragment;
     }
 
@@ -49,8 +48,7 @@ public  class NeighbourFragment extends Fragment implements MyNeighbourRecyclerV
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
-        //Bundle arguments = getArguments();
-       // name = (arguments != null)? arguments.getString("name", "empty"): "empty";
+
 
     }
 
@@ -66,6 +64,7 @@ public  class NeighbourFragment extends Fragment implements MyNeighbourRecyclerV
 
         //use method to configure OnClickRecyclerView
         this.configureOnClickRecyclerView();
+
         return view;
     }
 
@@ -91,14 +90,6 @@ public  class NeighbourFragment extends Fragment implements MyNeighbourRecyclerV
         EventBus.getDefault().unregister(this);
     }
 
-    //implement the interface method getUser
-    @Override
-    public  Neighbour getUser(int position) {
-
-        return mNeighbours.get(position);
-
-
-    }
 
     /**
      * Fired if the user clicks on a delete button
@@ -119,25 +110,27 @@ public  class NeighbourFragment extends Fragment implements MyNeighbourRecyclerV
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                        Neighbour neighbour = getUser(position);
 
-                       /* Bundle bundle = new Bundle();
-                        String myMessage = "Stack Overflow is cool!";
-                        bundle.putString("message", myMessage );
-                        NeighbourFragment fragInfo = new NeighbourFragment();
-                        fragInfo.setArguments(bundle);
-                        fragmentManager.beginTransaction()
-                        transaction.replace(R.id., fragInfo);
-                        transaction.commit();*/
+                        Bundle arguments = new Bundle();
+                        arguments.putInt(KEY_POSITION,position);
+                        NeighbourFragment.newInstance().setArguments(arguments);
+
+
+
+                        if (position >= 0){
+
+                            Toast.makeText(getContext(), "You clicked on user : " + arguments, Toast.LENGTH_SHORT).show();
+
+                        }
 
                         //- Show result in a Toast
-                        Toast.makeText(getContext(), "You clicked on user : " + neighbour.getName(), Toast.LENGTH_SHORT).show();
                        }
                 });
 
+
     }
 
-    //public  Boolean isItClicked = this.configureOnClickRecyclerView(this);
+
 
     }
 

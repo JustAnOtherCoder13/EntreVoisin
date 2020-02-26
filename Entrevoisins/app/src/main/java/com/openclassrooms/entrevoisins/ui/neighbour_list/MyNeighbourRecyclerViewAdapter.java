@@ -72,13 +72,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
             ButterKnife.bind(this, view);
         }
     }
-    // get the user clicked
-    //do an interface ?
-    public interface NeighbourPosition{
 
-        Neighbour getUser(int position);
-
-    }
 
     }
 

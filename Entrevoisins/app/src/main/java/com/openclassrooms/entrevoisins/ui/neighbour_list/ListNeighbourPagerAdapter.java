@@ -4,17 +4,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.openclassrooms.entrevoisins.model.Neighbour;
-
-import java.util.List;
-
 
 public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
-    Fragment mainfrag = NeighbourFragment.newInstance();
+
+    private Fragment frag;
+
+    private int position;
 
 
-    public ListNeighbourPagerAdapter(FragmentManager fm) {
+
+
+
+
+    public ListNeighbourPagerAdapter(FragmentManager fm, int position) {
+
         super(fm);
+        this.position = position;
     }
 
     /**
@@ -27,8 +32,10 @@ public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
     @Override
     public Fragment getItem(int position) {
 
-        return mFragToUse(mainfrag);
+
+        return mFragToUse(frag);
     }
+
     /**
      * get the number of pages
      * @return
@@ -39,7 +46,16 @@ public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
     }
 
 
- private Fragment mFragToUse (Fragment frag){
+ private Fragment mFragToUse (Fragment fragment){
+    // position = getArguments().getInt(KEY_POSITION, -1);
+     if (position>0) {
+
+
+         frag = NeighbourFragmentDetail.newInstance();
+     }
+     else {
+         frag = NeighbourFragment.newInstance();
+     }
         return frag;
  }
 

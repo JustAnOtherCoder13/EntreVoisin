@@ -22,6 +22,7 @@ public class ListNeighbourActivity extends AppCompatActivity  {
     ViewPager mViewPager;
 
     ListNeighbourPagerAdapter mPagerAdapter;
+    int mPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class ListNeighbourActivity extends AppCompatActivity  {
         ButterKnife.bind(this);
 
         setSupportActionBar(mToolbar);
-        mPagerAdapter = new ListNeighbourPagerAdapter(getSupportFragmentManager());
+        mPagerAdapter = new ListNeighbourPagerAdapter(getSupportFragmentManager(),mPosition);
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
