@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,7 +31,10 @@ public  class NeighbourFragment extends Fragment {
     private NeighbourApiService mApiService;
     private  List<Neighbour> mNeighbours;
     private RecyclerView mRecyclerView;
-   private static final String KEY_POSITION = "position";
+   public static final String KEY_POSITION = "position";
+   private int position;
+
+
 
 
     /**
@@ -60,6 +64,16 @@ public  class NeighbourFragment extends Fragment {
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
+        Bundle arguments = new Bundle();
+
+
+        arguments.putInt(KEY_POSITION,position);
+        NeighbourFragment.newInstance().setArguments(arguments);
+        if (arguments != null) {
+            int position = arguments.getInt(KEY_POSITION, -1);
+            Log.e(getClass().getSimpleName(), "onCreateView called for fragment number "+position);
+        }
+
         initList();
 
         //use method to configure OnClickRecyclerView
@@ -102,26 +116,35 @@ public  class NeighbourFragment extends Fragment {
         initList();
     }
 
+    public Neighbour getUser(int position){
+        return mNeighbours.get(position);
+
+    }
     //configure click on recycler view
 
-    private void configureOnClickRecyclerView() {
+    public void configureOnClickRecyclerView() {
 
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
                     @Override
                     public void onItemClicked(RecyclerView recyclerView, int position, View v) {
 
-                        Bundle arguments = new Bundle();
+                       /* Bundle arguments = new Bundle();
                         arguments.putInt(KEY_POSITION,position);
-                        NeighbourFragment.newInstance().setArguments(arguments);
+                        NeighbourFragment.newInstance().setArguments(arguments);*/
 
 
 
-                        if (position >= 0){
+                      //  if (position >= 0){
+                         //  arguments = NeighbourFragment.this.getArguments();
+                            //if (arguments != null){
+                            //    position = arguments.getInt(NeighbourFragment.KEY_POSITION, -1);
 
-                            Toast.makeText(getContext(), "You clicked on user : " + arguments, Toast.LENGTH_SHORT).show();
+                           // }
+                            //Log.e(getClass().getSimpleName(), "onCreateView called for fragment number "+arguments);
+                           // Toast.makeText(getContext(), "You clicked on user : " + this.arguments, Toast.LENGTH_SHORT).show();
 
-                        }
+                       // }
 
                         //- Show result in a Toast
                        }
