@@ -2,21 +2,21 @@ package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.openclassrooms.entrevoisins.R;
+import com.openclassrooms.entrevoisins.di.DI;
+import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 
-public class NeighbourFragmentDetail extends Fragment {
+public class NeighbourActivityDetail extends AppCompatActivity {
+
 
     @BindView(R.id.item_list_avatar)
      ImageView mItemListAvatar;
@@ -38,27 +38,17 @@ public class NeighbourFragmentDetail extends Fragment {
     @BindView (R.id.item_list_favorite_button)
     ImageButton mFavoriteButton;
 
-
-
-
-    public static NeighbourFragmentDetail newInstance() {
-        NeighbourFragmentDetail fragment = new NeighbourFragmentDetail();
-
-        return fragment;
-    }
+    private static final String KEY_POSITION = "position" ;
+    private NeighbourApiService mApiService;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_neighbour_detail, container, false);
-        ButterKnife.bind(this,view);
-
-        return view;
+        setContentView(R.layout.activity_neighbour_detail);
+        Bundle arguments = getIntent().getExtras();
+        assert arguments != null;
+        int position = arguments.getInt(KEY_POSITION, -1);
+        mApiService = DI.getNeighbourApiService();
+        Log.i("test", "onCreate: " + position);
     }
 }

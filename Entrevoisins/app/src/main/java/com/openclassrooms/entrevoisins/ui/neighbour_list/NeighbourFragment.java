@@ -2,16 +2,16 @@ package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
@@ -26,15 +26,13 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.List;
 
 
-public  class NeighbourFragment extends Fragment {
+public class NeighbourFragment extends Fragment {
 
     private NeighbourApiService mApiService;
-    private  List<Neighbour> mNeighbours;
+    private List<Neighbour> mNeighbours;
     private RecyclerView mRecyclerView;
-   public static final String KEY_POSITION = "position";
-   private int position;
-
-
+    public static final String KEY_POSITION = "position";
+    private int position;
 
 
     /**
@@ -44,7 +42,6 @@ public  class NeighbourFragment extends Fragment {
      */
     public static NeighbourFragment newInstance() {
         NeighbourFragment fragment = new NeighbourFragment();
-
         return fragment;
     }
 
@@ -52,8 +49,6 @@ public  class NeighbourFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
-
-
     }
 
     @Override
@@ -64,16 +59,6 @@ public  class NeighbourFragment extends Fragment {
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        Bundle arguments = new Bundle();
-
-
-        arguments.putInt(KEY_POSITION,position);
-        NeighbourFragment.newInstance().setArguments(arguments);
-        if (arguments != null) {
-            int position = arguments.getInt(KEY_POSITION, -1);
-            Log.e(getClass().getSimpleName(), "onCreateView called for fragment number "+position);
-        }
-
         initList();
 
         //use method to configure OnClickRecyclerView
@@ -116,46 +101,21 @@ public  class NeighbourFragment extends Fragment {
         initList();
     }
 
-    public Neighbour getUser(int position){
-        return mNeighbours.get(position);
 
-    }
     //configure click on recycler view
 
     public void configureOnClickRecyclerView() {
 
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
-                .setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
-                    @Override
-                    public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-
-                       /* Bundle arguments = new Bundle();
-                        arguments.putInt(KEY_POSITION,position);
-                        NeighbourFragment.newInstance().setArguments(arguments);*/
-
-
-
-                      //  if (position >= 0){
-                         //  arguments = NeighbourFragment.this.getArguments();
-                            //if (arguments != null){
-                            //    position = arguments.getInt(NeighbourFragment.KEY_POSITION, -1);
-
-                           // }
-                            //Log.e(getClass().getSimpleName(), "onCreateView called for fragment number "+arguments);
-                           // Toast.makeText(getContext(), "You clicked on user : " + this.arguments, Toast.LENGTH_SHORT).show();
-
-                       // }
-
-                        //- Show result in a Toast
-                       }
+                .setOnItemClickListener((recyclerView, position, v) -> {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt(KEY_POSITION, position);
+                    Intent intent = new Intent(getContext(), NeighbourActivityDetail.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
                 });
-
-
     }
-
-
-
-    }
+}
 
 
 
