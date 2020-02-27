@@ -12,6 +12,7 @@ public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
     public ListNeighbourPagerAdapter(FragmentManager fm, int position) {
 
         super(fm);
+        //get the position in the frag manager
         this.position = position;
     }
 
@@ -21,7 +22,6 @@ public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
      * @return
      */
 
-    //here to chose witch fragment is used
     @Override
     public Fragment getItem(int position) {
         return NeighbourFragment.newInstance();

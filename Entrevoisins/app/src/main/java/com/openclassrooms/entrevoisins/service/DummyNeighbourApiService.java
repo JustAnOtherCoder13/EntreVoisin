@@ -10,6 +10,7 @@ import java.util.List;
 public class DummyNeighbourApiService implements  NeighbourApiService {
 
     private List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
+    private Neighbour mNeighbour;
 
 
     /**
@@ -27,4 +28,11 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     public void deleteNeighbour(Neighbour neighbour) {
         neighbours.remove(neighbour);
     }
+
+    @Override
+    public void getTheGoodNeighbour(Neighbour neighbour, int position) {
+        neighbours.get(position);
+    }
+
+
 }

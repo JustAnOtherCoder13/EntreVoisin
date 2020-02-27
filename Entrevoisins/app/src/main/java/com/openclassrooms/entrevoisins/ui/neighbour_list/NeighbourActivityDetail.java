@@ -45,10 +45,13 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_neighbour_detail);
+        //create a bundle to get the extras
         Bundle arguments = getIntent().getExtras();
+        //ensure arguments is non null
         assert arguments != null;
+        //if arguments aren't null, get the int
         int position = arguments.getInt(KEY_POSITION, -1);
+        //initialize the apiService to catch the Neighbours list
         mApiService = DI.getNeighbourApiService();
-        Log.i("test", "onCreate: " + position);
     }
 }

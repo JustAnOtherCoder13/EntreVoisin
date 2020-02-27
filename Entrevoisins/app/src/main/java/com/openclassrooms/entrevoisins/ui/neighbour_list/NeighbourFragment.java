@@ -12,10 +12,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
+import com.openclassrooms.entrevoisins.events.GetTheGoodNeighbour;
 import com.openclassrooms.entrevoisins.events.ItemClickSupport;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
@@ -33,6 +35,7 @@ public class NeighbourFragment extends Fragment {
     private RecyclerView mRecyclerView;
     public static final String KEY_POSITION = "position";
     private int position;
+    private Neighbour neighbour;
 
 
     /**
@@ -100,7 +103,11 @@ public class NeighbourFragment extends Fragment {
         mApiService.deleteNeighbour(event.neighbour);
         initList();
     }
-
+    @Subscribe
+    public void onClickedNeighbour(GetTheGoodNeighbour event) {
+        mApiService.getTheGoodNeighbour(event.neighbour, event.position);
+        Toast.makeText(getContext(), "You clicked on user : "+this.position+""+this.neighbour, Toast.LENGTH_SHORT).show();
+    }
 
     //configure click on recycler view
 
@@ -108,13 +115,19 @@ public class NeighbourFragment extends Fragment {
 
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
+                    //create a bundle to save the position
                     Bundle bundle = new Bundle();
                     bundle.putInt(KEY_POSITION, position);
+                    //create an intent to pass it to NeighbourDetailActivity
                     Intent intent = new Intent(getContext(), NeighbourActivityDetail.class);
                     intent.putExtras(bundle);
+                    //start the activity stored in the intent
                     startActivity(intent);
+
+
                 });
     }
+
 }
 
 
