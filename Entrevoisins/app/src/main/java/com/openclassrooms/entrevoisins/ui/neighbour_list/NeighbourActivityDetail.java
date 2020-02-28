@@ -8,6 +8,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.model.Neighbour;
@@ -16,6 +18,7 @@ import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 
 public class NeighbourActivityDetail extends AppCompatActivity {
@@ -56,6 +59,15 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         int position = arguments.getInt(KEY_POSITION, -1);
         mApiService = DI.getNeighbourApiService();
         neighbour = getUser(position);
+        ButterKnife.bind(this);
+        mItemListName.setText(neighbour.getName());
+        mItemListNameDetail.setText(neighbour.getName());
+        Glide.with(mItemListAvatar.getContext())
+                .load(neighbour.getAvatarUrl())
+                .fitCenter()
+
+                // .apply(RequestOptions.())
+                .into(mItemListAvatar);
         Log.i("test", "onCreate: " + neighbour.getName());
     }
 
