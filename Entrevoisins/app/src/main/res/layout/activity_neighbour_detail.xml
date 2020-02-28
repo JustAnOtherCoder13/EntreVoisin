@@ -53,12 +53,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/text_margin"
-                android:background="@null"
+                android:background="@drawable/ic_brightness_1_black_70dp"
                 app:layout_constraintBottom_toBottomOf="@+id/item_list_detail"
                 app:layout_constraintEnd_toEndOf="@id/item_list_avatar"
                 app:layout_constraintTop_toTopOf="@id/item_list_name"
-                app:layout_constraintVertical_bias="0.065"
-                app:srcCompat="@drawable/ic_star_black_40dp" />
+                app:layout_constraintVertical_bias="0.22"
+                app:srcCompat="@drawable/ic_star_black_24dp" />
 
             <TextView
                 android:id="@+id/item_list_detail"

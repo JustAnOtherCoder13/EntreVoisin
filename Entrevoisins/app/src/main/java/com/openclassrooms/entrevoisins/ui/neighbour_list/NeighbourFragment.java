@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -63,7 +62,6 @@ public class NeighbourFragment extends Fragment {
 
         //use method to configure OnClickRecyclerView
         this.configureOnClickRecyclerView();
-
         return view;
     }
 
@@ -72,7 +70,6 @@ public class NeighbourFragment extends Fragment {
      */
     private void initList() {
         mNeighbours = mApiService.getNeighbours();
-
         mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
     }
 
@@ -101,11 +98,9 @@ public class NeighbourFragment extends Fragment {
         initList();
     }
 
-
     //configure click on recycler view
 
     public void configureOnClickRecyclerView() {
-
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
                     Bundle bundle = new Bundle();
