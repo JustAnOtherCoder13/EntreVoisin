@@ -1,5 +1,6 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,11 +26,11 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
 
     private final List<Neighbour> mNeighbours;
 
-    public MyNeighbourRecyclerViewAdapter(List<Neighbour> items) {
+    MyNeighbourRecyclerViewAdapter(List<Neighbour> items) {
         mNeighbours = items;
-
     }
 
+    @NonNull
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
@@ -45,7 +46,6 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
                 .load(neighbour.getAvatarUrl())
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.mNeighbourAvatar);
-
         holder.mDeleteButton.setOnClickListener(v -> EventBus.getDefault().post(new DeleteNeighbourEvent(neighbour)));
     }
 
@@ -54,7 +54,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
         return mNeighbours.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.item_list_avatar)
         public ImageView mNeighbourAvatar;
         @BindView(R.id.item_list_name)
@@ -62,12 +62,10 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
         @BindView(R.id.item_list_delete_button)
         public ImageButton mDeleteButton;
 
-        public ViewHolder(View view) {
+        ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
         }
     }
-
-
     }
 

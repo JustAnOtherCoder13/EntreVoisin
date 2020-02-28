@@ -22,7 +22,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.neighbour_list.NeighbourActivityDetail"></activity>
+        <activity android:name=".ui.neighbour_list.NeighbourActivityDetail"
+            ></activity>
     </application>
 
 </manifest>

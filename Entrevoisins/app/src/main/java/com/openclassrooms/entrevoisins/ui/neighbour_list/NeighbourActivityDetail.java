@@ -3,7 +3,8 @@ package com.openclassrooms.entrevoisins.ui.neighbour_list;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,13 +12,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
-import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
-import org.greenrobot.eventbus.EventBus;
-
 import java.util.List;
+import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,32 +48,40 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     private static final String KEY_POSITION = "position";
     private NeighbourApiService mApiService;
     private Neighbour neighbour;
-    private List<Neighbour> mNeighbours;
-    private int position;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Random random = new Random();
+        int nb;
+        nb = random.nextInt(100);
         setContentView(R.layout.activity_neighbour_detail);
+        //create bundle and get position
         Bundle arguments = getIntent().getExtras();
         assert arguments != null;
         int position = arguments.getInt(KEY_POSITION, -1);
+        //initialize apiService and neighbour
         mApiService = DI.getNeighbourApiService();
         neighbour = getUser(position);
+        //bind and fill the view
         ButterKnife.bind(this);
         mItemListName.setText(neighbour.getName());
         mItemListNameDetail.setText(neighbour.getName());
+        mItemListNameDetailLocalisation.setText(neighbour.getAddress());
+        mItemListNameDetailMail.setText(neighbour.getFacebook().concat(neighbour.getName().toLowerCase()));
+        mItemListNameDetailPhone.setText(neighbour.getPhone().concat(String.valueOf(random.nextInt(100))).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)));
+        //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
         Glide.with(mItemListAvatar.getContext())
                 .load(neighbour.getAvatarUrl())
                 .fitCenter()
                 .into(mItemListAvatar);
+        //use listener to close activity by clicking return button
         mReturnButton.setOnClickListener(v -> backToMain());
-        Log.i("test", "onCreate: " + neighbour.getName());
     }
-
-
+    //method to catch the neighbour clicked
     private Neighbour getUser(int position) {
-        mNeighbours = mApiService.getNeighbours();
+        List<Neighbour> mNeighbours = mApiService.getNeighbours();
         neighbour = mNeighbours.get(position);
         return neighbour;
     }

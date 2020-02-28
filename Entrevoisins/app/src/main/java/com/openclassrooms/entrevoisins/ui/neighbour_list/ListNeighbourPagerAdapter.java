@@ -7,11 +7,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 
 public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
 
-    private int position;
-
-    public ListNeighbourPagerAdapter(FragmentManager fm, int position) {
+    ListNeighbourPagerAdapter(FragmentManager fm) {
         super(fm);
-        this.position = position;
     }
     /**
      * getItem is called to instantiate the fragment for the given page.
