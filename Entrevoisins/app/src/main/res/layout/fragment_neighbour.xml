@@ -31,7 +31,7 @@
         android:id="@+id/item_list_delete_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="@dimen/text_margin"
         android:background="@null"
         app:layout_constraintBottom_toBottomOf="@+id/item_list_name"
         app:layout_constraintEnd_toEndOf="parent"

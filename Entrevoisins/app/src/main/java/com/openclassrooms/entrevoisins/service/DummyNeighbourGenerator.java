@@ -28,4 +28,14 @@ abstract class DummyNeighbourGenerator {
     static List<Neighbour> generateNeighbours() {
         return new ArrayList<>(DUMMY_NEIGHBOURS);
     }
+
+    static List<Neighbour> dummy_favorite_neigbour = Arrays.asList(
+
+    );
+
+    static List<Neighbour> generateFavoriteNeighbours() {
+        return new ArrayList<>(dummy_favorite_neigbour);
+    }
+
 }
+

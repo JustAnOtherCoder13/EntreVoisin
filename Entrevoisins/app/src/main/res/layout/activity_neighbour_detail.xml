@@ -80,7 +80,7 @@
                 style="@style/Title_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/view_margin"
+                android:layout_marginStart="@dimen/view_big_margin"
                 android:layout_marginTop="@dimen/text_margin"
                 android:layout_marginEnd="@dimen/view_margin"
                 app:layout_constraintStart_toStartOf="@id/item_list_detail"
