@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,7 @@ public class NeighbourFragment extends Fragment {
     private NeighbourApiService mApiService;
     private RecyclerView mRecyclerView;
     public static final String KEY_POSITION = "position";
-
+    private boolean myBol;
 
 
     /**
@@ -39,14 +40,19 @@ public class NeighbourFragment extends Fragment {
      *
      * @return @{@link NeighbourFragment}
      */
-    public static NeighbourFragment newInstance() {
-        return new NeighbourFragment();
+    public static NeighbourFragment newInstance(boolean myBol) {
+        NeighbourFragment frag = new NeighbourFragment();
+        Bundle bundle = new Bundle();
+        bundle.putBoolean("myBol", myBol);
+        frag.setArguments(bundle);
+        return frag;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
+        myBol = getArguments().getBoolean("myBol", true);
     }
 
     @Override
@@ -69,9 +75,13 @@ public class NeighbourFragment extends Fragment {
      */
     private void initList() {
 
-        List<Neighbour> mNeighbours = mApiService.getNeighbours();
-
-        mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+        if (myBol) {
+            List<Neighbour> mNeighbours = mApiService.getNeighbours();
+            mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+        } else {
+            List<Neighbour> mNeighbours = mApiService.getFavorite();
+            mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+        }
     }
 
 
