@@ -1,8 +1,11 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
+import android.widget.Toast;
 
 
 public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
@@ -17,6 +20,7 @@ public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
      */
     @Override
     public Fragment getItem(int position) {
+        
         return NeighbourFragment.newInstance();
     }
 
@@ -26,6 +30,6 @@ public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
      */
     @Override
     public int getCount() {
-        return 1;
+        return 2;
     }
 }
