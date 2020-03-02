@@ -4,10 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.openclassrooms.entrevoisins.model.Neighbour;
-
-import java.util.List;
-
 
 public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
 
@@ -25,7 +21,6 @@ public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
         switch (position){
 
             case 0 :
-
                 return NeighbourFragment.newInstance(true);
             case 1 :
                 return NeighbourFragment.newInstance(false);

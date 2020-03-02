@@ -3,8 +3,7 @@ package com.openclassrooms.entrevoisins.ui.neighbour_list;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
-import android.view.WindowManager;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -47,7 +46,7 @@ public class NeighbourActivityDetail extends AppCompatActivity {
 
     private static final String KEY_POSITION = "position";
     private NeighbourApiService mApiService;
-    private Neighbour neighbour;
+    private Neighbour mNeighbour;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,31 +62,45 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         int position = arguments.getInt(KEY_POSITION, -1);
         //initialize apiService and neighbour
         mApiService = DI.getNeighbourApiService();
-        neighbour = getUser(position);
+        mNeighbour = getUser(position);
         //bind and fill the view
         ButterKnife.bind(this);
-        mItemListName.setText(neighbour.getName());
-        mItemListNameDetail.setText(neighbour.getName());
-        mItemListNameDetailLocalisation.setText(neighbour.getAddress());
-        mItemListNameDetailMail.setText(neighbour.getFacebook().concat(neighbour.getName().toLowerCase()));
-        mItemListNameDetailPhone.setText(neighbour.getPhone().concat(String.valueOf(random.nextInt(100))).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)));
+        mItemListName.setText(mNeighbour.getName());
+        mItemListNameDetail.setText(mNeighbour.getName());
+        mItemListNameDetailLocalisation.setText(mNeighbour.getAddress());
+        mItemListNameDetailMail.setText(mNeighbour.getFacebook().concat(mNeighbour.getName().toLowerCase()));
+        mItemListNameDetailPhone.setText(mNeighbour.getPhone().concat(String.valueOf(random.nextInt(100))).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)));
         //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
         Glide.with(mItemListAvatar.getContext())
-                .load(neighbour.getAvatarUrl())
+                .load(mNeighbour.getAvatarUrl())
                 .fitCenter()
                 .into(mItemListAvatar);
         //use listener to close activity by clicking return button
         mReturnButton.setOnClickListener(v -> backToMain());
+        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addFavorite(position);
+
+            }
+        });
     }
     //method to catch the neighbour clicked
     private Neighbour getUser(int position) {
-        List<Neighbour> mNeighbours = mApiService.getNeighbours();
-        neighbour = mNeighbours.get(position);
-        return neighbour;
+        List<Neighbour> neighbours = mApiService.getNeighbours();
+        mNeighbour = neighbours.get(position);
+        return mNeighbour;
     }
 
     private void backToMain(){
         this.finish();
+    };
+
+    private void addFavorite(int position){
+        List<Neighbour> favList = mApiService.getFavorite();
+        List<Neighbour> neighbours = mApiService.getNeighbours();
+        mNeighbour = neighbours.get(position);
+        favList.add(mNeighbour);
     }
 
 }
