@@ -47,6 +47,7 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     private static final String KEY_POSITION = "position";
     private NeighbourApiService mApiService;
     private Neighbour mNeighbour;
+    private List<Neighbour> mNeighbourList;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,8 +88,8 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     }
     //method to catch the neighbour clicked
     private Neighbour getUser(int position) {
-        List<Neighbour> neighbours = mApiService.getNeighbours();
-        mNeighbour = neighbours.get(position);
+        mNeighbourList = mApiService.getNeighbours();
+        mNeighbour = mNeighbourList.get(position);
         return mNeighbour;
     }
 
@@ -98,8 +99,8 @@ public class NeighbourActivityDetail extends AppCompatActivity {
 
     private void addFavorite(int position){
         List<Neighbour> favList = mApiService.getFavorite();
-        List<Neighbour> neighbours = mApiService.getNeighbours();
-        mNeighbour = neighbours.get(position);
+        mNeighbourList = mApiService.getNeighbours();
+        mNeighbour = mNeighbourList.get(position);
         favList.add(mNeighbour);
     }
 
