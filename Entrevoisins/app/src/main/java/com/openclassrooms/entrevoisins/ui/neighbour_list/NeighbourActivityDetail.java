@@ -3,8 +3,8 @@ package com.openclassrooms.entrevoisins.ui.neighbour_list;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Window;
-import android.view.WindowManager;
+import android.util.Log;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,14 +48,15 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     private static final String KEY_POSITION = "position";
     private NeighbourApiService mApiService;
     private Neighbour neighbour;
+    private List<Neighbour> mFavorite;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         Random random = new Random();
-        int nb;
-        nb = random.nextInt(100);
+
+
         setContentView(R.layout.activity_neighbour_detail);
         //create bundle and get position
         Bundle arguments = getIntent().getExtras();
@@ -70,7 +71,7 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         mItemListNameDetail.setText(neighbour.getName());
         mItemListNameDetailLocalisation.setText(neighbour.getAddress());
         mItemListNameDetailMail.setText(neighbour.getFacebook().concat(neighbour.getName().toLowerCase()));
-        mItemListNameDetailPhone.setText(neighbour.getPhone().concat(String.valueOf(random.nextInt(100))).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)));
+        mItemListNameDetailPhone.setText(neighbour.getPhone().concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)));
         //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
         Glide.with(mItemListAvatar.getContext())
                 .load(neighbour.getAvatarUrl())
@@ -78,9 +79,19 @@ public class NeighbourActivityDetail extends AppCompatActivity {
                 .into(mItemListAvatar);
         //use listener to close activity by clicking return button
         mReturnButton.setOnClickListener(v -> backToMain());
+        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToFav(position);
+                FavUpdate();
+                Log.i("test", "onClick: "+position);
+            }
+        });
     }
     //method to catch the neighbour clicked
     private Neighbour getUser(int position) {
+
+        //how to know witch method to use
         List<Neighbour> mNeighbours = mApiService.getNeighbours();
         neighbour = mNeighbours.get(position);
         return neighbour;
@@ -89,5 +100,18 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     private void backToMain(){
         this.finish();
     }
+
+    private List<Neighbour> addToFav(int position){
+        mFavorite = mApiService.getFavorite();
+        //getUser(position);
+        mFavorite.add(neighbour);
+        return mFavorite;
+       //mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mFavorite));
+    }
+    private void FavUpdate(){
+
+        List<Neighbour> UpdateFavorite = mFavorite;
+
+    };
 
 }

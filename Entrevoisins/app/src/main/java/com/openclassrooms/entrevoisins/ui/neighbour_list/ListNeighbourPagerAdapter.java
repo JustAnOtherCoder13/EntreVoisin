@@ -3,6 +3,7 @@ package com.openclassrooms.entrevoisins.ui.neighbour_list;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.util.Log;
 
 import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.model.Neighbour;
@@ -16,6 +17,7 @@ public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
 
    NeighbourApiService mApiService = DI.getNeighbourApiService();
     List<Neighbour> mNeighbours;
+
 
     ListNeighbourPagerAdapter(FragmentManager fm) {
         super(fm);
@@ -31,14 +33,17 @@ public  class ListNeighbourPagerAdapter extends FragmentPagerAdapter  {
     public Fragment getItem(int position) {
         switch (position){
             case 0 :
-                 mNeighbours = mApiService.getNeighbours();
-                break;
-            case 1 :
-                mNeighbours = mApiService.getFavorite();
-                break;
-        }
-        return NeighbourFragment.newInstance(mNeighbours);
+                Log.i("test", "getItem: ");
+                 return NeighbourFragment.newInstance();
 
+            case 1 :
+                Log.i("test", "getItem: ");
+
+                return FavoriteFragment.newInstance();
+
+            default:
+                return null;
+        }
     }
 
     /**

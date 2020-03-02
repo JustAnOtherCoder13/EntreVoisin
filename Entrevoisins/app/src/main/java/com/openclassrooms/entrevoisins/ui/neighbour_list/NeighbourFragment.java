@@ -39,8 +39,7 @@ public class NeighbourFragment extends Fragment {
      *
      * @return @{@link NeighbourFragment}
      */
-    public static NeighbourFragment newInstance(List<Neighbour> mNeighbours) {
-        List<Neighbour> mNeighbourToShow = mNeighbours;
+    public static NeighbourFragment newInstance() {
         return new NeighbourFragment();
     }
 

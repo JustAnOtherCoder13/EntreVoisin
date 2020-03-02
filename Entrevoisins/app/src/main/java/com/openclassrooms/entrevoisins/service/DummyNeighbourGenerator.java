@@ -31,7 +31,9 @@ abstract class DummyNeighbourGenerator {
 
     static List<Neighbour> dummy_favorite_neigbour = Arrays.asList(
 
-    );
+            new Neighbour(2, "Jack", "http://i.pravatar.cc/150?u=a042581f4e29026704e","13580 La Fare-les-Oliviers","+33 6 ","www.facebook.fr/","")
+
+            );
 
     static List<Neighbour> generateFavoriteNeighbours() {
         return new ArrayList<>(dummy_favorite_neigbour);

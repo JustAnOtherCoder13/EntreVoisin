@@ -32,17 +32,9 @@ public class ListNeighbourActivity extends AppCompatActivity  {
 
         setSupportActionBar(mToolbar);
         mPagerAdapter = new ListNeighbourPagerAdapter(getSupportFragmentManager());
-        //affiche la liste
-        //mTabLayout.setupWithViewPager(mViewPager);
-        int numTab = mTabLayout.getSelectedTabPosition();
-
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
-
-
-        Log.i("test", "onCreate: "+numTab);
     }
 
 
