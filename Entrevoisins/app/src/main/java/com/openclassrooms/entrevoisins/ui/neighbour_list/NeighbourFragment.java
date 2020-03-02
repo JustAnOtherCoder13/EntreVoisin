@@ -39,7 +39,8 @@ public class NeighbourFragment extends Fragment {
      *
      * @return @{@link NeighbourFragment}
      */
-    public static NeighbourFragment newInstance() {
+    public static NeighbourFragment newInstance(List<Neighbour> mNeighbours) {
+        List<Neighbour> mNeighbourToShow = mNeighbours;
         return new NeighbourFragment();
     }
 
@@ -68,6 +69,9 @@ public class NeighbourFragment extends Fragment {
      * Init the List of neighbours
      */
     private void initList() {
+        //switch the list
+        //ListNeighbourPagerAdapter switchPosition = new ListNeighbourPagerAdapter(getFragmentManager());
+        //switchPosition.getItem()
         List<Neighbour> mNeighbours = mApiService.getNeighbours();
         mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
     }
