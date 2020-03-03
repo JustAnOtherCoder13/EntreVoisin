@@ -3,6 +3,7 @@ package com.openclassrooms.entrevoisins.ui.neighbour_list;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -11,8 +12,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
+import com.openclassrooms.entrevoisins.events.AddFavoriteEvent;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 import java.util.Random;
@@ -78,13 +82,18 @@ public class NeighbourActivityDetail extends AppCompatActivity {
                 .into(mItemListAvatar);
                         //use listener to close activity by clicking return button
         mReturnButton.setOnClickListener(v -> backToMain());
-        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addFavorite(position);
+        mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().post(new AddFavoriteEvent(mNeighbour)));
+            //addFavorite(position);
+          //  new AddFavoriteEvent(mNeighbour);
+          //  Log.i("test", "onClick: "+mNeighbour.getName());
+           // int initFavorite = 1;
+            //
+           /* Bundle bundle = new Bundle();
+            bundle.putInt("initFavorite",initFavorite);
+            NeighbourFragment frag = new NeighbourFragment();
+            frag.setArguments(bundle);*/
 
-            }
-        });
+        //});
     }
             //method to catch the neighbour clicked
     private Neighbour getUser(int position,int page) {

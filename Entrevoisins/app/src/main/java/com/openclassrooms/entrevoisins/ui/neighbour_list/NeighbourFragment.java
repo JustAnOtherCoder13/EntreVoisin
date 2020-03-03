@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
+import com.openclassrooms.entrevoisins.events.AddFavoriteEvent;
 import com.openclassrooms.entrevoisins.events.DeleteNeighbourEvent;
 import com.openclassrooms.entrevoisins.events.ItemClickSupport;
 import com.openclassrooms.entrevoisins.model.Neighbour;
@@ -116,6 +117,14 @@ public class NeighbourFragment extends Fragment {
             initList();
         }
     }
+
+    @Subscribe
+    public void onAddFavoriteEvent (AddFavoriteEvent event){
+
+        mApiService.getFavorite().add(event.neighbour);
+        initList();
+    }
+
 
     //configure click on recycler view
 
