@@ -48,6 +48,7 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     private NeighbourApiService mApiService;
     private Neighbour mNeighbour;
     private List<Neighbour> mNeighbourList;
+    private int mPage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,9 +60,10 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         Bundle arguments = getIntent().getExtras();
         assert arguments != null;
         int position = arguments.getInt(KEY_POSITION, -1);
+        mPage = arguments.getInt("mPagePosition",0);
                 //initialize apiService and neighbour
         mApiService = DI.getNeighbourApiService();
-        mNeighbour = getUser(position);
+        mNeighbour = getUser(position,mPage);
                 //bind and fill the view
         ButterKnife.bind(this);
         mItemListName.setText(mNeighbour.getName());
@@ -85,10 +87,18 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         });
     }
             //method to catch the neighbour clicked
-    private Neighbour getUser(int position) {
+    private Neighbour getUser(int position,int page) {
+        page = this.mPage;
+        if (page == 0){
         mNeighbourList = mApiService.getNeighbours();
         mNeighbour = mNeighbourList.get(position);
         return mNeighbour;
+        }
+        else {
+            List<Neighbour> favList = mApiService.getFavorite();
+            Neighbour favNeighbour = favList.get(position);
+            return favNeighbour;
+        }
     }
 
     private void backToMain(){

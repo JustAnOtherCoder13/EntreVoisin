@@ -32,6 +32,7 @@ public class NeighbourFragment extends Fragment {
     private RecyclerView mRecyclerView;
     public static final String KEY_POSITION = "position";
     private boolean myBol;
+    private int mPagePosition;
     List<Neighbour> mNeighbours;
 
 
@@ -40,10 +41,10 @@ public class NeighbourFragment extends Fragment {
      *
      * @return @{@link NeighbourFragment}
      */
-    public static NeighbourFragment newInstance(boolean myBol) {
+    public static NeighbourFragment newInstance(int mPagePosition) {
         NeighbourFragment frag = new NeighbourFragment();
         Bundle bundle = new Bundle();
-        bundle.putBoolean("myBol", myBol);
+        bundle.putInt("mPagePosition", mPagePosition);
         frag.setArguments(bundle);
         return frag;
     }
@@ -53,7 +54,7 @@ public class NeighbourFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
         assert getArguments() != null;
-        myBol = getArguments().getBoolean("myBol", true);
+        mPagePosition = getArguments().getInt("mPagePosition", 0);
     }
 
     @Override
@@ -76,7 +77,7 @@ public class NeighbourFragment extends Fragment {
      */
     private void initList() {
 
-        if (myBol) {
+        if (mPagePosition == 0) {
             mNeighbours = mApiService.getNeighbours();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
         } else {
@@ -106,7 +107,7 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
-        if (myBol) {
+        if (mPagePosition == 0) {
             mApiService.deleteNeighbour(event.neighbour);
             initList();
         }
@@ -122,9 +123,12 @@ public class NeighbourFragment extends Fragment {
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
                     Bundle bundle = new Bundle();
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putInt("mPagePosition",mPagePosition);
                     bundle.putInt(KEY_POSITION, position);
                     Intent intent = new Intent(getContext(), NeighbourActivityDetail.class);
                     intent.putExtras(bundle);
+                    intent.putExtras(bundle1);
                     startActivity(intent);
                 });
     }
