@@ -32,6 +32,7 @@ public class NeighbourFragment extends Fragment {
     private RecyclerView mRecyclerView;
     public static final String KEY_POSITION = "position";
     private boolean myBol;
+    List<Neighbour> mNeighbours;
 
 
     /**
@@ -76,10 +77,10 @@ public class NeighbourFragment extends Fragment {
     private void initList() {
 
         if (myBol) {
-            List<Neighbour> mNeighbours = mApiService.getNeighbours();
+            mNeighbours = mApiService.getNeighbours();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
         } else {
-            List<Neighbour> mNeighbours = mApiService.getFavorite();
+            mNeighbours = mApiService.getFavorite();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
         }
     }
@@ -105,8 +106,14 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
-        mApiService.deleteNeighbour(event.neighbour);
-        initList();
+        if (myBol) {
+            mApiService.deleteNeighbour(event.neighbour);
+            initList();
+        }
+        else {
+            mApiService.getFavorite().remove(event.neighbour);
+            initList();
+        }
     }
 
     //configure click on recycler view

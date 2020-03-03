@@ -54,29 +54,27 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Random random = new Random();
-        int nb;
-        nb = random.nextInt(100);
         setContentView(R.layout.activity_neighbour_detail);
-        //create bundle and get position
+                //create bundle and get position
         Bundle arguments = getIntent().getExtras();
         assert arguments != null;
         int position = arguments.getInt(KEY_POSITION, -1);
-        //initialize apiService and neighbour
+                //initialize apiService and neighbour
         mApiService = DI.getNeighbourApiService();
         mNeighbour = getUser(position);
-        //bind and fill the view
+                //bind and fill the view
         ButterKnife.bind(this);
         mItemListName.setText(mNeighbour.getName());
         mItemListNameDetail.setText(mNeighbour.getName());
         mItemListNameDetailLocalisation.setText(mNeighbour.getAddress());
         mItemListNameDetailMail.setText(mNeighbour.getFacebook().concat(mNeighbour.getName().toLowerCase()));
         mItemListNameDetailPhone.setText(mNeighbour.getPhone().concat(String.valueOf(random.nextInt(100))).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)));
-        //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
+                //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
         Glide.with(mItemListAvatar.getContext())
                 .load(mNeighbour.getAvatarUrl())
                 .fitCenter()
                 .into(mItemListAvatar);
-        //use listener to close activity by clicking return button
+                        //use listener to close activity by clicking return button
         mReturnButton.setOnClickListener(v -> backToMain());
         mFavoriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +84,7 @@ public class NeighbourActivityDetail extends AppCompatActivity {
             }
         });
     }
-    //method to catch the neighbour clicked
+            //method to catch the neighbour clicked
     private Neighbour getUser(int position) {
         mNeighbourList = mApiService.getNeighbours();
         mNeighbour = mNeighbourList.get(position);
