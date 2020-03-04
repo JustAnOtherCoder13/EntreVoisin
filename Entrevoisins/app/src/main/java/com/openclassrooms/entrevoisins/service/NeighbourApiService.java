@@ -16,6 +16,7 @@ public interface NeighbourApiService {
      */
     List<Neighbour> getNeighbours();
 
+            //add getFavorite method in the api
     /**
      * Get all my Favorite
      * @return {@link List}
