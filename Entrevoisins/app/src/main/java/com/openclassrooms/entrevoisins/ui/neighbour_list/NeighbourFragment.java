@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,7 @@ import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Objects;
@@ -118,12 +120,13 @@ public class NeighbourFragment extends Fragment {
         }
     }
 
-    @Subscribe
-    public void onAddFavoriteEvent (AddFavoriteEvent event){
+/*    @Subscribe(threadMode = ThreadMode.MAIN)
+            public void onAddFavorite(AddFavoriteEvent event){
 
         mApiService.addFavorite(event.neighbour);
+        Log.i("test", "onAddFavorite: "+event.neighbour);
         initList();
-    }
+    }*/
 
 
     //configure click on recycler view
