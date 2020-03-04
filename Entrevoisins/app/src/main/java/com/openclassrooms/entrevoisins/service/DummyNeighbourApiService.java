@@ -29,4 +29,8 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     @Override
     public void deleteNeighbour(Neighbour neighbour) { neighbours.remove(neighbour); }
 
+    @Override
+    public void addFavorite(Neighbour neighbour) {
+        favorites.add(neighbour);
+    }
 }

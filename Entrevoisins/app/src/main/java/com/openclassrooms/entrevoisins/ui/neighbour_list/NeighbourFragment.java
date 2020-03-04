@@ -121,7 +121,7 @@ public class NeighbourFragment extends Fragment {
     @Subscribe
     public void onAddFavoriteEvent (AddFavoriteEvent event){
 
-        mApiService.getFavorite().add(event.neighbour);
+        mApiService.addFavorite(event.neighbour);
         initList();
     }
 
