@@ -35,7 +35,6 @@ public class NeighbourFragment extends Fragment {
 
     private NeighbourApiService mApiService;
     private RecyclerView mRecyclerView;
-    public static final String KEY_POSITION = "position";
     private int mPagePosition;
     List<Neighbour> mNeighbours;
 
@@ -45,10 +44,10 @@ public class NeighbourFragment extends Fragment {
      *
      * @return @{@link NeighbourFragment}
      */
-    public static NeighbourFragment newInstance(int mPagePosition) {
+    public static NeighbourFragment newInstance(int pagePosition) {
         NeighbourFragment frag = new NeighbourFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("mPagePosition", mPagePosition);
+        bundle.putInt("pagePosition", pagePosition);
         frag.setArguments(bundle);
         return frag;
     }
@@ -57,8 +56,6 @@ public class NeighbourFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
-        assert getArguments() != null;
-        mPagePosition = getArguments().getInt("mPagePosition", 0);
     }
 
     @Override
@@ -80,7 +77,8 @@ public class NeighbourFragment extends Fragment {
      * Init the List of neighbours
      */
     private void initList() {
-
+        assert getArguments() != null;
+        mPagePosition = getArguments().getInt("pagePosition", -1);
         if (mPagePosition == 0) {
             mNeighbours = mApiService.getNeighbours();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
@@ -111,6 +109,7 @@ public class NeighbourFragment extends Fragment {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
+
     /**
      * Fired if the user clicks on a delete button
      *
@@ -118,11 +117,18 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
-        if (mPagePosition == 0) {
+
+        int eventId = event.neighbour.getId();
+        int idToCompare = mApiService.getNeighbours().get(event.position).getId();
+        boolean isNeighbourInFavorite = mApiService.getFavorite().contains(event.neighbour);
+        int favoriteListSize = mApiService.getFavorite().size();
+
+        if (eventId == idToCompare) {
             mApiService.deleteNeighbour(event.neighbour);
-            initList();
-        } else {
-            mApiService.getFavorite().remove(event.neighbour);
+            if (isNeighbourInFavorite){
+                Log.i("test", "onDeleteNeighbour: "+favoriteListSize+" "+eventId);
+                mApiService.getFavorite().remove(event.neighbour);
+            }
             initList();
         }
     }
@@ -133,19 +139,20 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe(sticky = true)
     public void onAddFavorite(AddFavoriteEvent event) {
-        if (mApiService.getFavorite().contains(event.neighbour)) {
-            Log.i("test", "onAddFavorite: " + event.neighbour);
-        } else { mApiService.addFavorite(event.neighbour); }
+        if (!mApiService.getFavorite().contains(event.neighbour)) {
+            mApiService.addFavorite(event.neighbour);
+        }
         initList();
     }
+
     //configure click on recycler view
     public void configureOnClickRecyclerView() {
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
                     Bundle bundle = new Bundle();
                     Bundle bundle1 = new Bundle();
-                    bundle1.putInt("mPagePosition", mPagePosition);
-                    bundle.putInt(KEY_POSITION, position);
+                    bundle1.putInt("pagePosition", mPagePosition);
+                    bundle.putInt("position", position);
                     Intent intent = new Intent(getContext(), NeighbourActivityDetail.class);
                     intent.putExtras(bundle);
                     intent.putExtras(bundle1);

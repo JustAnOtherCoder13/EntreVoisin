@@ -46,10 +46,8 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     @BindView(R.id.item_list_favorite_button)
     ImageButton mFavoriteButton;
 
-    private static final String KEY_POSITION = "position";
     private NeighbourApiService mApiService;
     private Neighbour mNeighbour;
-    private int mPage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,11 +58,11 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         //create bundle and get position
         Bundle arguments = getIntent().getExtras();
         assert arguments != null;
-        int position = arguments.getInt(KEY_POSITION, -1);
-        mPage = arguments.getInt("mPagePosition", 0);
+        int position = arguments.getInt("position", -1);
+        int page = arguments.getInt("pagePosition", -1);
         //initialize apiService and neighbour
         mApiService = DI.getNeighbourApiService();
-        mNeighbour = getUser(position, mPage);
+        mNeighbour = getUser(position, page);
         //bind and fill the view
         ButterKnife.bind(this);
         mItemListName.setText(mNeighbour.getName());
@@ -85,14 +83,12 @@ public class NeighbourActivityDetail extends AppCompatActivity {
 
     //method to catch the neighbour clicked
     private Neighbour getUser(int position, int page) {
-        page = this.mPage;
         if (page == 0) {
-            List<Neighbour> mNeighbourList = mApiService.getNeighbours();
-            mNeighbour = mNeighbourList.get(position);
-            return mNeighbour;
+            List<Neighbour> neighbourList = mApiService.getNeighbours();
+            return neighbourList.get(position);
         } else {
-            List<Neighbour> mFavoriteNeighbour = mApiService.getFavorite();
-            return mFavoriteNeighbour.get(position);
+            List<Neighbour> favoriteNeighbour = mApiService.getFavorite();
+            return favoriteNeighbour.get(position);
         }
     }
 
