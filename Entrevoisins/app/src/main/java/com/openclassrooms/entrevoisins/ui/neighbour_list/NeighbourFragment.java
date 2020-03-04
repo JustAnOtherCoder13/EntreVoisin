@@ -36,7 +36,6 @@ public class NeighbourFragment extends Fragment {
     private NeighbourApiService mApiService;
     private RecyclerView mRecyclerView;
     public static final String KEY_POSITION = "position";
-    private boolean myBol;
     private int mPagePosition;
     List<Neighbour> mNeighbours;
 
@@ -91,23 +90,20 @@ public class NeighbourFragment extends Fragment {
         }
     }
 
-
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
-
     }
 
     @Override
     public void onPause() {
         super.onPause();
         AddFavoriteEvent stickyEvent = EventBus.getDefault().getStickyEvent(AddFavoriteEvent.class);
-        if(stickyEvent != null) {
+        if (stickyEvent != null) {
             // "Consume" the sticky event
             EventBus.getDefault().removeStickyEvent(stickyEvent);
         }
-
     }
 
     @Override
@@ -115,8 +111,6 @@ public class NeighbourFragment extends Fragment {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
-
     /**
      * Fired if the user clicks on a delete button
      *
@@ -127,36 +121,30 @@ public class NeighbourFragment extends Fragment {
         if (mPagePosition == 0) {
             mApiService.deleteNeighbour(event.neighbour);
             initList();
-        }
-        else {
+        } else {
             mApiService.getFavorite().remove(event.neighbour);
             initList();
         }
     }
-
+    /**
+     * Fired if the user clicks on favorite button
+     *
+     * @param event
+     */
     @Subscribe(sticky = true)
-            public void onAddFavorite(AddFavoriteEvent event) {
+    public void onAddFavorite(AddFavoriteEvent event) {
         if (mApiService.getFavorite().contains(event.neighbour)) {
-
             Log.i("test", "onAddFavorite: " + event.neighbour);
-
-        }
-        else{
-            mApiService.addFavorite(event.neighbour);
-
-        }
+        } else { mApiService.addFavorite(event.neighbour); }
         initList();
     }
-
-
     //configure click on recycler view
-
     public void configureOnClickRecyclerView() {
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
                     Bundle bundle = new Bundle();
                     Bundle bundle1 = new Bundle();
-                    bundle1.putInt("mPagePosition",mPagePosition);
+                    bundle1.putInt("mPagePosition", mPagePosition);
                     bundle.putInt(KEY_POSITION, position);
                     Intent intent = new Intent(getContext(), NeighbourActivityDetail.class);
                     intent.putExtras(bundle);
