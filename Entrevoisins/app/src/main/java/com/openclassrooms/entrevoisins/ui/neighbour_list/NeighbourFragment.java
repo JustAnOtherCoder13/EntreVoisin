@@ -31,7 +31,6 @@ public class NeighbourFragment extends Fragment {
     private NeighbourApiService mApiService;
     private RecyclerView mRecyclerView;
     private int mPagePosition;
-    private List<Neighbour> mNeighbours;
 
 
     /**
@@ -76,6 +75,7 @@ public class NeighbourFragment extends Fragment {
      */
     private void initList() {
             //check the page position to init the good list.
+        List<Neighbour> mNeighbours;
         if (mPagePosition == 0) {
             mNeighbours = mApiService.getNeighbours();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
