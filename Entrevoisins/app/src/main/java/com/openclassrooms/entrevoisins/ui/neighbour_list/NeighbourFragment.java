@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
@@ -27,6 +28,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Observable;
 
 
 public class NeighbourFragment extends Fragment {
@@ -94,6 +96,18 @@ public class NeighbourFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AddFavoriteEvent stickyEvent = EventBus.getDefault().getStickyEvent(AddFavoriteEvent.class);
+        if(stickyEvent != null) {
+            // "Consume" the sticky event
+            EventBus.getDefault().removeStickyEvent(stickyEvent);
+        }
+
     }
 
     @Override
@@ -120,13 +134,19 @@ public class NeighbourFragment extends Fragment {
         }
     }
 
-/*    @Subscribe(threadMode = ThreadMode.MAIN)
-            public void onAddFavorite(AddFavoriteEvent event){
+    @Subscribe(sticky = true)
+            public void onAddFavorite(AddFavoriteEvent event) {
+        if (mApiService.getFavorite().contains(event.neighbour)) {
 
-        mApiService.addFavorite(event.neighbour);
-        Log.i("test", "onAddFavorite: "+event.neighbour);
+            Log.i("test", "onAddFavorite: " + event.neighbour);
+
+        }
+        else{
+            mApiService.addFavorite(event.neighbour);
+
+        }
         initList();
-    }*/
+    }
 
 
     //configure click on recycler view

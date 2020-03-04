@@ -82,7 +82,7 @@ public class NeighbourActivityDetail extends AppCompatActivity {
                 .into(mItemListAvatar);
                         //use listener to close activity by clicking return button
         mReturnButton.setOnClickListener(v -> backToMain());
-        mFavoriteButton.setOnClickListener(v -> onAddFavorite(position));
+        mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().postSticky(new AddFavoriteEvent(mNeighbour)));
     }
             //method to catch the neighbour clicked
     private Neighbour getUser(int position,int page) {
@@ -101,13 +101,5 @@ public class NeighbourActivityDetail extends AppCompatActivity {
 
     private void backToMain(){
         this.finish();
-    };
-    //method to add favorite by addFavorite event
-    public void onAddFavorite(int position){
-        Neighbour neighbour = mApiService.getNeighbours().get(position);
-        AddFavoriteEvent event=new AddFavoriteEvent(neighbour);
-        mApiService.addFavorite(event.neighbour);
-        Log.i("test", "onAddFavorite: "+event.neighbour);
-
     }
 }
