@@ -20,7 +20,7 @@ public class Neighbour {
      */
     private String avatarUrl;
 
-            // add necessary attributes
+    // add necessary attributes
     /**
      * Address
      */
@@ -40,6 +40,7 @@ public class Neighbour {
      */
 
     private String aboutMeTxt;
+
     /**
      * Constructor
      *
@@ -55,7 +56,7 @@ public class Neighbour {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
-                // pass them to the constructor and add them in parameters
+        // pass them to the constructor and add them in parameters
         this.address = address;
         this.phone = phone;
         this.facebook = facebook;
@@ -81,7 +82,7 @@ public class Neighbour {
         this.avatarUrl = avatarUrl;
     }
 
-            //getters and setters for new attributes
+    //getters and setters for new attributes
 
     public String getAddress() {
         return address;
@@ -91,7 +92,7 @@ public class Neighbour {
     }
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
-    public String getFacebook() { return  facebook; }
+    public String getFacebook() { return facebook; }
     public void setFacebook(String facebook) { this.facebook = facebook; }
     public String getAboutMeTxt() { return aboutMeTxt; }
     public void setAboutMeTxt(String aboutMeTxt) { this.aboutMeTxt = aboutMeTxt; }

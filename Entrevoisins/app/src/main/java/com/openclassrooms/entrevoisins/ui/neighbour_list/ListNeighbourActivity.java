@@ -11,7 +11,7 @@ import com.openclassrooms.entrevoisins.R;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ListNeighbourActivity extends AppCompatActivity  {
+public class ListNeighbourActivity extends AppCompatActivity {
 
     // UI Components
     @BindView(R.id.tabs)
@@ -28,17 +28,12 @@ public class ListNeighbourActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_neighbour);
         ButterKnife.bind(this);
-
         setSupportActionBar(mToolbar);
         mPagerAdapter = new ListNeighbourPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(mPagerAdapter);
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(mTabLayout));
         mTabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-
     }
-
-
-
 }
 
 

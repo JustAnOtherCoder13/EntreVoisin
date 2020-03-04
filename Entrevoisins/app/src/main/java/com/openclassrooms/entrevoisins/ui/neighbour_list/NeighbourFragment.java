@@ -30,10 +30,8 @@ public class NeighbourFragment extends Fragment {
 
     private NeighbourApiService mApiService;
     private RecyclerView mRecyclerView;
-    public static final String KEY_POSITION = "position";
-    private boolean myBol;
     private int mPagePosition;
-    List<Neighbour> mNeighbours;
+    private List<Neighbour> mNeighbours;
 
 
     /**
@@ -41,10 +39,11 @@ public class NeighbourFragment extends Fragment {
      *
      * @return @{@link NeighbourFragment}
      */
-    public static NeighbourFragment newInstance(int mPagePosition) {
+    public static NeighbourFragment newInstance(int pagePosition) {
+            //create a new NeighbourFragment and save the page position in a bundle
         NeighbourFragment frag = new NeighbourFragment();
         Bundle bundle = new Bundle();
-        bundle.putInt("mPagePosition", mPagePosition);
+        bundle.putInt("pagePosition", pagePosition);
         frag.setArguments(bundle);
         return frag;
     }
@@ -53,8 +52,9 @@ public class NeighbourFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
+            //get the pagePosition on creating the fragment.
         assert getArguments() != null;
-        mPagePosition = getArguments().getInt("mPagePosition", 0);
+        mPagePosition = getArguments().getInt("pagePosition", -1);
     }
 
     @Override
@@ -71,12 +71,11 @@ public class NeighbourFragment extends Fragment {
         this.configureOnClickRecyclerView();
         return view;
     }
-
     /**
      * Init the List of neighbours
      */
     private void initList() {
-
+            //check the page position to init the good list.
         if (mPagePosition == 0) {
             mNeighbours = mApiService.getNeighbours();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
@@ -85,7 +84,6 @@ public class NeighbourFragment extends Fragment {
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
         }
     }
-
 
     @Override
     public void onStart() {
@@ -98,8 +96,6 @@ public class NeighbourFragment extends Fragment {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
-
     /**
      * Fired if the user clicks on a delete button
      *
@@ -107,6 +103,7 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
+            //check the good page to delete neighbour
         if (mPagePosition == 0) {
             mApiService.deleteNeighbour(event.neighbour);
             initList();
@@ -116,16 +113,15 @@ public class NeighbourFragment extends Fragment {
             initList();
         }
     }
-
-    //configure click on recycler view
-
+        //configure click on recycler view
     public void configureOnClickRecyclerView() {
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
+                    //create two bundle one for the neighbour position and other for page position
                     Bundle bundle = new Bundle();
                     Bundle bundle1 = new Bundle();
-                    bundle1.putInt("mPagePosition",mPagePosition);
-                    bundle.putInt(KEY_POSITION, position);
+                    bundle1.putInt("pagePosition",mPagePosition);
+                    bundle.putInt("position", position);
                     Intent intent = new Intent(getContext(), NeighbourActivityDetail.class);
                     intent.putExtras(bundle);
                     intent.putExtras(bundle1);

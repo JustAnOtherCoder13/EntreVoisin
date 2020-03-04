@@ -3,7 +3,6 @@ package com.openclassrooms.entrevoisins.ui.neighbour_list;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,10 +19,9 @@ import java.util.Random;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-
 public class NeighbourActivityDetail extends AppCompatActivity {
 
-
+        //U.I dynamics views.
     @BindView(R.id.item_list_avatar)
     ImageView mItemListAvatar;
     @BindView(R.id.item_list_name)
@@ -38,78 +36,71 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     TextView mItemListNameDetailMail;
     @BindView(R.id.item_list_presentation_about_me_txt)
     TextView mItemListPresentationAboutMe;
-
+        //U.I Images buttons.
     @BindView(R.id.item_list_return_button)
     ImageButton mReturnButton;
     @BindView(R.id.item_list_favorite_button)
     ImageButton mFavoriteButton;
 
-    private static final String KEY_POSITION = "position";
     private NeighbourApiService mApiService;
     private Neighbour mNeighbour;
     private List<Neighbour> mNeighbourList;
-    private int mPage;
+    private List<Neighbour> mFavoriteList;
+    private int mPosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        Random random = new Random();
         setContentView(R.layout.activity_neighbour_detail);
-                //create bundle and get position
+
+             //create bundle and get position and page number.
         Bundle arguments = getIntent().getExtras();
         assert arguments != null;
-        int position = arguments.getInt(KEY_POSITION, -1);
-        mPage = arguments.getInt("mPagePosition",0);
-                //initialize apiService and neighbour
+        mPosition = arguments.getInt("position", -1);
+        int page = arguments.getInt("pagePosition", -1);
+            //initialize apiService and neighbour
         mApiService = DI.getNeighbourApiService();
-        mNeighbour = getUser(position,mPage);
-                //bind and fill the view
+        mNeighbour = getUser(mPosition, page);
+            //bind and fill the views
         ButterKnife.bind(this);
         mItemListName.setText(mNeighbour.getName());
         mItemListNameDetail.setText(mNeighbour.getName());
         mItemListNameDetailLocalisation.setText(mNeighbour.getAddress());
         mItemListNameDetailMail.setText(mNeighbour.getFacebook().concat(mNeighbour.getName().toLowerCase()));
-        mItemListNameDetailPhone.setText(mNeighbour.getPhone().concat(String.valueOf(random.nextInt(100))).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)).concat(" ").concat(String.valueOf(random.nextInt(90)+10)));
-                //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
+            //use random to create fake phone number.
+        Random random = new Random();
+        mItemListNameDetailPhone.setText(mNeighbour.getPhone().concat(String.valueOf(random.nextInt(100))).concat(" ").concat(String.valueOf(random.nextInt(90) + 10)).concat(" ").concat(String.valueOf(random.nextInt(90) + 10)).concat(" ").concat(String.valueOf(random.nextInt(90) + 10)));
+            //comment getAboutMeTxt cause is empty and lorem ipsum is in the textView.
+        //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
         Glide.with(mItemListAvatar.getContext())
                 .load(mNeighbour.getAvatarUrl())
                 .fitCenter()
                 .into(mItemListAvatar);
-                        //use listener to close activity by clicking return button
+            //use listener to close activity by clicking return button
         mReturnButton.setOnClickListener(v -> backToMain());
-        mFavoriteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addFavorite(position);
-
-            }
-        });
+            //use a listener to add a favorite by clicking the favorite button.
+        mFavoriteButton.setOnClickListener(view -> addFavorite(mPosition));
     }
-            //method to catch the neighbour clicked
-    private Neighbour getUser(int position,int page) {
-        page = this.mPage;
-        if (page == 0){
-        mNeighbourList = mApiService.getNeighbours();
-        mNeighbour = mNeighbourList.get(position);
+
+        //method to catch the neighbour clicked and the page where the click was donne
+    private Neighbour getUser(int position, int page) {
+        if (page == 0) {
+            mNeighbourList = mApiService.getNeighbours();
+            mNeighbour = mNeighbourList.get(position);
+        } else {
+            mFavoriteList = mApiService.getFavorite();
+            mNeighbour = mFavoriteList.get(position);
+        }
         return mNeighbour;
-        }
-        else {
-            List<Neighbour> favList = mApiService.getFavorite();
-            Neighbour favNeighbour = favList.get(position);
-            return favNeighbour;
-        }
     }
+        //method to close the activity
+    private void backToMain() { this.finish(); }
 
-    private void backToMain(){
-        this.finish();
-    };
-
-    private void addFavorite(int position){
-        List<Neighbour> favList = mApiService.getFavorite();
+        //method to addFavorite
+    private void addFavorite(int position) {
+        mFavoriteList = mApiService.getFavorite();
         mNeighbourList = mApiService.getNeighbours();
         mNeighbour = mNeighbourList.get(position);
-        favList.add(mNeighbour);
+        mFavoriteList.add(mNeighbour);
     }
-
 }
