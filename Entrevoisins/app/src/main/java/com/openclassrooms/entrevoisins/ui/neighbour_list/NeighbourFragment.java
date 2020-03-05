@@ -119,17 +119,31 @@ public class NeighbourFragment extends Fragment {
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
 
         initList();
+        assert getArguments() != null;
+        mPagePosition = getArguments().getInt("pagePosition", -1);
+        // var to compare
         int eventId = event.neighbour.getId();
-        int idToCompare = mApiService.getNeighbours().get(event.position).getId();
-        boolean isNeighbourInFavorite = mApiService.getFavorite().contains(event.neighbour);
-
-        if (eventId == idToCompare) {
-            mApiService.deleteNeighbour(event.neighbour);
-            if (isNeighbourInFavorite){
+        int idNeighbourCompare = mApiService.getNeighbours().get(event.position).getId();
+        String eventName = event.neighbour.getName();
+        String neighbourNameCompare = mApiService.getNeighbours().get(event.position).getName();
+        Log.i("test", "onDeleteNeighbour: " + eventName + " " + eventId + " " + idNeighbourCompare + " " + neighbourNameCompare);
+        if (mPagePosition == 0 && event.position < mApiService.getNeighbours().size()) {
+            if (eventId == idNeighbourCompare && eventName.equals(neighbourNameCompare)) {
+                mApiService.deleteNeighbour(event.neighbour);
+                if (mApiService.getFavorite().contains(event.neighbour)) {
+                    mApiService.getFavorite().remove(event.neighbour);
+                    return;
+                }
+            }
+        }
+        if (mPagePosition == 1 && event.position < mApiService.getFavorite().size()) {
+            int idFavoriteCompare = mApiService.getFavorite().get(event.position).getId();
+            if (eventId == idFavoriteCompare) {
                 mApiService.getFavorite().remove(event.neighbour);
             }
         }
     }
+
     /**
      * Fired if the user clicks on favorite button
      *
@@ -139,6 +153,9 @@ public class NeighbourFragment extends Fragment {
     public void onAddFavorite(AddFavoriteEvent event) {
         if (!mApiService.getFavorite().contains(event.neighbour)) {
             mApiService.addFavorite(event.neighbour);
+            for (int i = 0; i < mApiService.getFavorite().size(); i++) {
+                mApiService.getFavorite().get(i).setId(i);
+            }
         }
         initList();
     }

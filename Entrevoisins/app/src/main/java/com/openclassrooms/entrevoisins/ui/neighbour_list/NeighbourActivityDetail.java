@@ -78,7 +78,7 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         //use listener to close activity by clicking return button
         mReturnButton.setOnClickListener(v -> backToMain());
         //postSticky to get the post in memory since it is unregistered manually
-        mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().postSticky(new AddFavoriteEvent(mNeighbour)));
+        mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().postSticky(new AddFavoriteEvent(mNeighbour,position)));
     }
 
     //method to catch the neighbour clicked
