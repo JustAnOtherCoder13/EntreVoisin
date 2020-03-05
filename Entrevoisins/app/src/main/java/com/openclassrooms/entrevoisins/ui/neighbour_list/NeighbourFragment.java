@@ -118,18 +118,16 @@ public class NeighbourFragment extends Fragment {
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
 
+        initList();
         int eventId = event.neighbour.getId();
         int idToCompare = mApiService.getNeighbours().get(event.position).getId();
         boolean isNeighbourInFavorite = mApiService.getFavorite().contains(event.neighbour);
-        int favoriteListSize = mApiService.getFavorite().size();
 
         if (eventId == idToCompare) {
             mApiService.deleteNeighbour(event.neighbour);
             if (isNeighbourInFavorite){
-                Log.i("test", "onDeleteNeighbour: "+favoriteListSize+" "+eventId);
                 mApiService.getFavorite().remove(event.neighbour);
             }
-            initList();
         }
     }
     /**
