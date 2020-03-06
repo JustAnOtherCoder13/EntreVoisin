@@ -32,4 +32,25 @@
     <style name="Text_view_style" parent="TextAppearance.AppCompat">
         <item name="android:background">@color/white</item>
     </style>
+
+    <style name="Card_view_style" parent="TextAppearance.AppCompat">
+        <item name="android:background">@color/white</item>
+        <item name="android:layout_marginStart">@dimen/view_margin</item>
+        <item name="android:layout_marginTop">@dimen/view_margin</item>
+        <item name="android:layout_marginEnd">@dimen/view_margin</item>
+        <item name="cardCornerRadius">15dp</item>
+        <item name="cardElevation">10dp</item>
+    </style>
+
+    <style name="Fab_favorite_style">
+        <item name="android:layout_width">40dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="fabCustomSize">40dp</item>
+        <item name="android:src">@drawable/ic_star</item>
+        <item name="android:tint">@color/yellow</item>
+        <item name="android:backgroundTint">@color/white</item>
+        <item name="borderWidth">0dp</item>
+        <item name="elevation">15dp</item>
+    </style>
+
 </resources>

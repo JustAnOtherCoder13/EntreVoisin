@@ -45,30 +45,19 @@
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/item_list_favorite_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:elevation="15dp"
-                app:borderWidth="0dp"
-                android:backgroundTint="@color/white"
+                style="@style/Fab_favorite_style"
                 android:layout_marginEnd="@dimen/text_margin"
-                android:background="@drawable/ic_brightness_1_black_70dp"
                 app:layout_constraintBottom_toBottomOf="@+id/item_detail_card_view"
                 app:layout_constraintEnd_toEndOf="@id/item_list_avatar"
                 app:layout_constraintTop_toTopOf="@id/item_list_name"
                 app:layout_constraintVertical_bias="0.22"
-                app:srcCompat="@drawable/ic_star_black_24dp" />
+                />
 
             <android.support.v7.widget.CardView
                 android:id="@+id/item_detail_card_view"
-                style="@style/Text_view_style"
+                style="@style/Card_view_style"
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
-                android:layout_marginStart="@dimen/view_margin"
-                android:layout_marginTop="@dimen/view_margin"
-                android:layout_marginEnd="@dimen/view_margin"
-                android:textStyle="bold"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/item_list_avatar">
 
@@ -155,21 +144,16 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/item_list_presentation"
-                style="@style/Text_view_style"
+                style="@style/Card_view_style"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:layout_marginStart="@dimen/view_margin"
-                android:layout_marginTop="@dimen/text_margin"
-                android:layout_marginEnd="@dimen/view_margin"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/item_detail_card_view"
-                app:cardCornerRadius="15dp"
-                app:cardElevation="10dp"
-                >
+                app:layout_constraintTop_toBottomOf="@id/item_detail_card_view">
 
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+
                     <TextView
                         android:id="@+id/item_list_presentation_purpose"
                         style="@style/Title_text"
