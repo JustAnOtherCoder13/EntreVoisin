@@ -72,7 +72,6 @@ public class NeighbourFragment extends Fragment {
         this.configureOnClickRecyclerView();
         return view;
     }
-
     /**
      * Init the List of neighbours
      */
@@ -119,20 +118,19 @@ public class NeighbourFragment extends Fragment {
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
 
         initList();
-        assert getArguments() != null;
-        mPagePosition = getArguments().getInt("pagePosition", -1);
+        int eventId = event.neighbourId;
+        int idToCompare = mApiService.getNeighbours().get(event.position).getId();
         boolean myBol = event.neighbour.isFavorite();
-        Log.i("test", "onDeleteNeighbour: page position =" + mPagePosition);
+        Log.i("test", "onDeleteNeighbour: event id "+eventId+" event position "+event.position+" id to compare "+idToCompare+" page "+mPagePosition+" is fav "+myBol);
 
-        if (myBol) {
+         if (myBol) {
             mApiService.getFavorite().remove(event.neighbour);
             event.neighbour.setFavorite(false);
-            reAttributeFavoriteId();
-            Log.i("test", "onDeleteNeighbour: ");
         }
-        else if (!myBol) {
-            if (mPagePosition == 0)
+        else if (!myBol && eventId==idToCompare) {
             mApiService.deleteNeighbour(event.neighbour);
+            Log.i("test", "onDeleteNeighbour: "+event.neighbour.getName());
+
         }
     }
 
@@ -146,17 +144,12 @@ public class NeighbourFragment extends Fragment {
         if (!event.neighbour.isFavorite()) {
             mApiService.addFavorite(event.neighbour);
             event.neighbour.setFavorite(true);
-            reAttributeFavoriteId();
+            Log.i("test", "onAddFavorite: ");
         }
         initList();
     }
 
-    //attribute id by their index
-    public void reAttributeFavoriteId() {
-        for (int i = 0; i < mApiService.getFavorite().size(); i++) {
-            mApiService.getFavorite().get(i).setId(i);
-        }
-    }
+
 
     //configure click on recycler view
     public void configureOnClickRecyclerView() {
