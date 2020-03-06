@@ -31,6 +31,5 @@
 
     <style name="Text_view_style" parent="TextAppearance.AppCompat">
         <item name="android:background">@color/white</item>
-
     </style>
 </resources>
