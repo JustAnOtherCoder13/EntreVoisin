@@ -40,6 +40,11 @@ public class Neighbour {
      */
 
     private String aboutMeTxt;
+    /**
+     * IsFavBool
+     */
+
+    private boolean isFavorite;
 
     /**
      * Constructor
@@ -51,8 +56,9 @@ public class Neighbour {
      * @param phone
      * @param facebook
      * @param aboutMeTxt
+     * @param isFavorite
      */
-    public Neighbour(Integer id, String name, String avatarUrl, String address, String phone, String facebook, String aboutMeTxt) {
+    public Neighbour(Integer id, String name, String avatarUrl, String address, String phone, String facebook, String aboutMeTxt,boolean isFavorite) {
         this.id = id;
         this.name = name;
         this.avatarUrl = avatarUrl;
@@ -61,6 +67,7 @@ public class Neighbour {
         this.phone = phone;
         this.facebook = facebook;
         this.aboutMeTxt = aboutMeTxt;
+        this.isFavorite = isFavorite;
     }
 
     public Integer getId() {
@@ -96,6 +103,8 @@ public class Neighbour {
     public void setFacebook(String facebook) { this.facebook = facebook; }
     public String getAboutMeTxt() { return aboutMeTxt; }
     public void setAboutMeTxt(String aboutMeTxt) { this.aboutMeTxt = aboutMeTxt; }
+    public boolean isFavorite() { return isFavorite; }
+    public void setFavorite(boolean favorite) { isFavorite = favorite; }
 
     @Override
     public boolean equals(Object o) {

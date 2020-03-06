@@ -5,11 +5,9 @@ import com.openclassrooms.entrevoisins.model.Neighbour;
 public class AddFavoriteEvent {
 
         public Neighbour neighbour;
-        public int position;
 
-        public AddFavoriteEvent(Neighbour neighbour, int position) {
+        public AddFavoriteEvent(Neighbour neighbour) {
             this.neighbour = neighbour;
-            this.position = position;
 
         }
 

@@ -121,30 +121,19 @@ public class NeighbourFragment extends Fragment {
         initList();
         assert getArguments() != null;
         mPagePosition = getArguments().getInt("pagePosition", -1);
-        Log.i("test", "onDeleteNeighbour: page position ="+mPagePosition);
-        // var to compare
-        int eventId = event.neighbour.getId();
-        int idNeighbourCompare = mApiService.getNeighbours().get(event.position).getId();
-        String eventName = event.neighbour.getName();
-        String neighbourNameCompare = mApiService.getNeighbours().get(event.position).getName();
-        Log.i("test", "onDeleteNeighbour: before event neighbour list =" + eventName + " " + eventId + " " + idNeighbourCompare + " " + neighbourNameCompare+" "+event.position);
+        boolean myBol = event.neighbour.isFavorite();
+        Log.i("test", "onDeleteNeighbour: page position =" + mPagePosition);
 
-        if (mPagePosition == 1 && event.position < mApiService.getFavorite().size()) {
-            int idFavoriteCompare = mApiService.getFavorite().get(event.position).getId();
-            String favoriteNameCompare = mApiService.getFavorite().get(event.position).getName();
-            Log.i("test", "onDeleteNeighbour: if page position 1 event + favorite =" + eventName + " " + eventId + " " + idFavoriteCompare + " " + favoriteNameCompare);
-            if (eventId == idFavoriteCompare && eventName==favoriteNameCompare) {
-                mApiService.getFavorite().remove(event.neighbour);
-                reAttributeFavoriteId();
-            }
-            return;
+        if (myBol) {
+            mApiService.getFavorite().remove(event.neighbour);
+            event.neighbour.setFavorite(false);
+            reAttributeFavoriteId();
+            Log.i("test", "onDeleteNeighbour: ");
         }
-        if (mPagePosition == 0 && event.position < mApiService.getNeighbours().size() && eventId == idNeighbourCompare && eventName.equals(neighbourNameCompare) ) {
-                mApiService.deleteNeighbour(event.neighbour);
-            Log.i("test", "onDeleteNeighbour: else if page position 0 event neighbour list =" + eventName + " " + eventId + " " + idNeighbourCompare + " " + neighbourNameCompare);
+        else if (!myBol) {
+            if (mPagePosition == 0)
+            mApiService.deleteNeighbour(event.neighbour);
         }
-
-
     }
 
     /**
@@ -154,20 +143,18 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe(sticky = true)
     public void onAddFavorite(AddFavoriteEvent event) {
-        boolean myBol = !mApiService.getFavorite().contains(event.neighbour);
-        Log.i("test", "onAddFavorite: event neighbour"+myBol+" "+event.neighbour.getName());
-        if (!mApiService.getFavorite().contains(event.neighbour)) {
+        if (!event.neighbour.isFavorite()) {
             mApiService.addFavorite(event.neighbour);
+            event.neighbour.setFavorite(true);
             reAttributeFavoriteId();
         }
         initList();
-
     }
+
     //attribute id by their index
-    public void reAttributeFavoriteId(){
+    public void reAttributeFavoriteId() {
         for (int i = 0; i < mApiService.getFavorite().size(); i++) {
             mApiService.getFavorite().get(i).setId(i);
-            Log.i("test", "onAddFavorite: name + id ="+mApiService.getFavorite().get(i).getName()+" "+mApiService.getFavorite().get(i).getId());
         }
     }
 
