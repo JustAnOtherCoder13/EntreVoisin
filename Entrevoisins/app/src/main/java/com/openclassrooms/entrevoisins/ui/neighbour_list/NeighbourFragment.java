@@ -72,6 +72,7 @@ public class NeighbourFragment extends Fragment {
         this.configureOnClickRecyclerView();
         return view;
     }
+
     /**
      * Init the List of neighbours
      */
@@ -119,18 +120,19 @@ public class NeighbourFragment extends Fragment {
 
         initList();
         int eventId = event.neighbourId;
-        int idToCompare = mApiService.getNeighbours().get(event.position).getId();
-        boolean myBol = event.neighbour.isFavorite();
-        Log.i("test", "onDeleteNeighbour: event id "+eventId+" event position "+event.position+" id to compare "+idToCompare+" page "+mPagePosition+" is fav "+myBol);
+        int idToCompare = -1 ;
+        boolean isNeighbourIsFav = event.neighbour.isFavorite();
+        Neighbour  neighbourInFavList = searchNeighbourInFavList(event.neighbour.getName(),event.neighbour.getAddress());
 
-         if (myBol) {
-            mApiService.getFavorite().remove(event.neighbour);
-            event.neighbour.setFavorite(false);
+
+        if (mApiService.getNeighbours().contains(event.neighbour)){
+            idToCompare = mApiService.getNeighbours().get(event.position).getId();
         }
-        else if (!myBol && eventId==idToCompare) {
+        if (isNeighbourIsFav) {
+            mApiService.getFavorite().remove(neighbourInFavList);
+            event.neighbour.setFavorite(false);
+        } else if (!isNeighbourIsFav && eventId == idToCompare) {
             mApiService.deleteNeighbour(event.neighbour);
-            Log.i("test", "onDeleteNeighbour: "+event.neighbour.getName());
-
         }
     }
 
@@ -141,14 +143,43 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe(sticky = true)
     public void onAddFavorite(AddFavoriteEvent event) {
-        if (!event.neighbour.isFavorite()) {
-            mApiService.addFavorite(event.neighbour);
+
+        if (searchNeighbourInFavList(event.neighbour.getName(),event.neighbour.getAddress()) == null) {
+            Neighbour newFav = newFavoriteInstance(event.neighbour);
+            mApiService.addFavorite(newFav);
             event.neighbour.setFavorite(true);
-            Log.i("test", "onAddFavorite: ");
+            reAttributeFavoriteId();
         }
         initList();
     }
 
+    //re attribute fav list id in order to have two list with different id
+    private void reAttributeFavoriteId() {
+        for (int i = 0; i < mApiService.getFavorite().size(); i++) {
+            mApiService.getFavorite().get(i).setId(i);
+        }
+    }
+
+    //search neighbour in fav list with a name and address, if two matches, return the neighbour of fav list
+    private Neighbour searchNeighbourInFavList(String name, String address) {
+
+            String eventName = name;
+            String eventAddress = address;
+            Neighbour neighbourToSend = null;
+            for (int i = 0; i < mApiService.getFavorite().size(); i++) {
+                String nameToCompare = mApiService.getFavorite().get(i).getName();
+                String addressToCompare = mApiService.getFavorite().get(i).getAddress();
+                if (eventAddress.equals(addressToCompare) && eventName.equals(nameToCompare)) {
+                    neighbourToSend = mApiService.getFavorite().get(i);
+                }
+            }
+            return neighbourToSend;
+    }
+
+    //create a new Neighbour instance to add in fav list
+    private Neighbour newFavoriteInstance(Neighbour favorite) {
+        return new Neighbour(favorite.getId(), favorite.getName(), favorite.getAvatarUrl(), favorite.getAddress(), favorite.getPhone(), favorite.getFacebook(), favorite.getAboutMeTxt(), true);
+    }
 
 
     //configure click on recycler view
