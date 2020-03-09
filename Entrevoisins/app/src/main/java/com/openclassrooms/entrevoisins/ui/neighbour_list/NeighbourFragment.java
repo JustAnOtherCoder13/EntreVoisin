@@ -129,7 +129,7 @@ public class NeighbourFragment extends Fragment {
             idToCompare = mApiService.getNeighbours().get(event.position).getId();
         }
         if (isNeighbourIsFav) {
-            mApiService.getFavorite().remove(neighbourInFavList);
+            mApiService.deleteFavorite(neighbourInFavList);
             event.neighbour.setFavorite(false);
         } else if (!isNeighbourIsFav && eventId == idToCompare) {
             mApiService.deleteNeighbour(event.neighbour);
@@ -177,7 +177,7 @@ public class NeighbourFragment extends Fragment {
     }
 
     //create a new Neighbour instance to add in fav list
-    private Neighbour newFavoriteInstance(Neighbour favorite) {
+    public  Neighbour newFavoriteInstance(Neighbour favorite) {
         return new Neighbour(favorite.getId(), favorite.getName(), favorite.getAvatarUrl(), favorite.getAddress(), favorite.getPhone(), favorite.getFacebook(), favorite.getAboutMeTxt(), true);
     }
 
@@ -197,9 +197,3 @@ public class NeighbourFragment extends Fragment {
                 });
     }
 }
-
-
-
-
-
-
