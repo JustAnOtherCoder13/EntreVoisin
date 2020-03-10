@@ -163,13 +163,11 @@ public class NeighbourFragment extends Fragment {
     //search neighbour in fav list with a name and address, if two matches, return the neighbour of fav list
     private Neighbour searchNeighbourInFavList(String name, String address) {
 
-            String eventName = name;
-            String eventAddress = address;
             Neighbour neighbourToSend = null;
             for (int i = 0; i < mApiService.getFavorite().size(); i++) {
                 String nameToCompare = mApiService.getFavorite().get(i).getName();
                 String addressToCompare = mApiService.getFavorite().get(i).getAddress();
-                if (eventAddress.equals(addressToCompare) && eventName.equals(nameToCompare)) {
+                if (address.equals(addressToCompare) && name.equals(nameToCompare)) {
                     neighbourToSend = mApiService.getFavorite().get(i);
                 }
             }

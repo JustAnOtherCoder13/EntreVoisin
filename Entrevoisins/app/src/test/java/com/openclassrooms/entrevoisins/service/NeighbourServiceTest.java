@@ -1,10 +1,7 @@
 package com.openclassrooms.entrevoisins.service;
 
-import android.util.Log;
-
 import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.model.Neighbour;
-import com.openclassrooms.entrevoisins.ui.neighbour_list.NeighbourFragment;
 
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
 import org.junit.Before;
@@ -13,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -35,13 +33,14 @@ public class NeighbourServiceTest {
     public void getNeighboursWithSuccess() {
         List<Neighbour> neighbours = service.getNeighbours();
         List<Neighbour> expectedNeighbours = DummyNeighbourGenerator.DUMMY_NEIGHBOURS;
-        assertThat(neighbours, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedNeighbours.toArray()));
+        assertThat(neighbours, IsIterableContainingInAnyOrder.containsInAnyOrder(Objects.requireNonNull(expectedNeighbours.toArray())));
     }
+
     @Test
-    public void getFavoritesWithSuccess(){
+    public void getFavoritesWithSuccess() {
         List<Neighbour> favorites = service.getFavorite();
         List<Neighbour> expectedFavorites = DummyNeighbourGenerator.DUMMY_FAVORITE_NEIGHBOURS;
-        assertThat(favorites, IsIterableContainingInAnyOrder.containsInAnyOrder(expectedFavorites.toArray()));
+        assertThat(favorites, IsIterableContainingInAnyOrder.containsInAnyOrder(Objects.requireNonNull(expectedFavorites.toArray())));
     }
 
     @Test
@@ -51,15 +50,17 @@ public class NeighbourServiceTest {
         service.deleteNeighbour(neighbourToDelete);
         assertFalse(service.getNeighbours().contains(neighbourToDelete));
     }
+
     @Test
-    public void deleteFavoriteWithSuccess(){
+    public void deleteFavoriteWithSuccess() {
         Neighbour favoriteToDelete = service.getFavorite().get(0);
         service.deleteFavorite(favoriteToDelete);
         assertFalse(service.getFavorite().contains(favoriteToDelete));
     }
+
     @Test
-    public void addFavoriteWithSuccess(){
-        Neighbour neighbourToAddInFavorite = service.getNeighbours().get(0);
+    public void addFavoriteWithSuccess() {
+        Neighbour neighbourToAddInFavorite = service.getNeighbours().get(2);
         service.addFavorite(neighbourToAddInFavorite);
         assertTrue(service.getFavorite().contains(neighbourToAddInFavorite));
 
