@@ -82,9 +82,12 @@ public class NeighbourFragment extends Fragment {
         if (mPagePosition == 0) {
             mNeighbours = mApiService.getNeighbours();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+            mRecyclerView.setId(R.id.list_neighbours);
         } else {
             mNeighbours = mApiService.getFavorite();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
+            mRecyclerView.setId(R.id.list_favorites);
+
         }
     }
 
@@ -127,12 +130,14 @@ public class NeighbourFragment extends Fragment {
 
         if (mApiService.getNeighbours().contains(event.neighbour)){
             idToCompare = mApiService.getNeighbours().get(event.position).getId();
+
         }
         if (isNeighbourIsFav) {
             mApiService.deleteFavorite(neighbourInFavList);
             event.neighbour.setFavorite(false);
         } else if (!isNeighbourIsFav && eventId == idToCompare) {
             mApiService.deleteNeighbour(event.neighbour);
+
         }
     }
 
