@@ -85,9 +85,23 @@ public class NeighboursListTest {
         listFavorite
                 .check(withItemCount(FAV_COUNT - 1));
     }
+    @Test
+    public void myFavoriteList_deleteAction_shouldRemoveItem_onlyInFavList() {
+
+        //swipe left
+        onView(withId(R.id.container))
+                .perform(swipeLeft());
+        //perform click on deleteButton on first favorite
+        listFavorite
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()))
+                .check(withItemCount(FAV_COUNT - 1));
+        //ensure neighbourList is always full
+        listNeighbour
+                .check(withItemCount(ITEMS_COUNT));
+    }
 
     @Test
-    public void Neighbour_click_should_open_NeighbourActivityDetail_on_same_neighbour() {
+    public void Neighbour_click_shouldOpen_NeighbourActivityDetail_onSamNeighbour() {
         // perform click on the neighbour at index 1
         listNeighbour
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
@@ -103,7 +117,7 @@ public class NeighboursListTest {
     }
 
     @Test
-    public void Favorite_list_should_only_contained_favorite_neighbours() {
+    public void Favorite_list_should_onlyContained_favoriteNeighbours() {
         //delete the first and second neighbour of the list
         listNeighbour
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()))

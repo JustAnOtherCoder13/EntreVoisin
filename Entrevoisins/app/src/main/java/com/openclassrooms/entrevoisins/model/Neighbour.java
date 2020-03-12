@@ -1,12 +1,10 @@
 package com.openclassrooms.entrevoisins.model;
 
 import java.util.Objects;
-
 /**
  * Model object representing a Neighbour
  */
 public class Neighbour {
-
     /**
      * Identifier
      */
@@ -19,7 +17,6 @@ public class Neighbour {
      * Avatar
      */
     private String avatarUrl;
-
     // add necessary attributes
     /**
      * Address
@@ -28,24 +25,19 @@ public class Neighbour {
     /**
      * Phone
      */
-
     private String phone;
     /**
      * Facebook
      */
-
     private String facebook;
     /**
      * AboutMeTxt
      */
-
     private String aboutMeTxt;
     /**
      * IsFavBool
      */
-
     private boolean isFavorite;
-
     /**
      * Constructor
      *
@@ -90,7 +82,6 @@ public class Neighbour {
     }
 
     //getters and setters for new attributes
-
     public String getAddress() {
         return address;
     }

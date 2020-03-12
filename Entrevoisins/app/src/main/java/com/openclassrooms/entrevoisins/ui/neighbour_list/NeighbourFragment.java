@@ -1,6 +1,5 @@
 package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,15 +25,12 @@ import org.greenrobot.eventbus.Subscribe;
 import java.util.List;
 import java.util.Objects;
 
-
 public class NeighbourFragment extends Fragment {
 
     private NeighbourApiService mApiService;
     private RecyclerView mRecyclerView;
     private int mPagePosition;
     List<Neighbour> mNeighbours;
-
-
     /**
      * Create and return a new instance
      *
@@ -47,13 +43,11 @@ public class NeighbourFragment extends Fragment {
         frag.setArguments(bundle);
         return frag;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,12 +57,10 @@ public class NeighbourFragment extends Fragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
         initList();
-
         //use method to configure OnClickRecyclerView
         this.configureOnClickRecyclerView();
         return view;
     }
-
     /**
      * Init the List of neighbours
      */
@@ -92,7 +84,6 @@ public class NeighbourFragment extends Fragment {
         super.onStart();
         EventBus.getDefault().register(this);
     }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -102,13 +93,11 @@ public class NeighbourFragment extends Fragment {
             EventBus.getDefault().removeStickyEvent(stickyEvent);
         }
     }
-
     @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
     /**
      * Fired if the user clicks on a delete button
      *
@@ -123,20 +112,16 @@ public class NeighbourFragment extends Fragment {
         boolean isNeighbourIsFav = event.neighbour.isFavorite();
         Neighbour  neighbourInFavList = searchNeighbourInFavList(event.neighbour.getName(),event.neighbour.getAddress());
 
-
         if (mApiService.getNeighbours().contains(event.neighbour)){
             idToCompare = mApiService.getNeighbours().get(event.position).getId();
-
         }
         if (isNeighbourIsFav) {
             mApiService.deleteFavorite(neighbourInFavList);
             event.neighbour.setFavorite(false);
         } else if (!isNeighbourIsFav && eventId == idToCompare) {
             mApiService.deleteNeighbour(event.neighbour);
-
         }
     }
-
     /**
      * Fired if the user clicks on favorite button
      *
@@ -153,14 +138,12 @@ public class NeighbourFragment extends Fragment {
         }
         initList();
     }
-
     //re attribute fav list id in order to have two list with different id
     private void reAttributeFavoriteId() {
         for (int i = 0; i < mApiService.getFavorite().size(); i++) {
             mApiService.getFavorite().get(i).setId(i);
         }
     }
-
     //search neighbour in fav list with a name and address, if two matches, return the neighbour of fav list
     private Neighbour searchNeighbourInFavList(String name, String address) {
 
@@ -174,13 +157,10 @@ public class NeighbourFragment extends Fragment {
             }
             return neighbourToSend;
     }
-
     //create a new Neighbour instance to add in fav list
     public  Neighbour newFavoriteInstance(Neighbour favorite) {
         return new Neighbour(favorite.getId(), favorite.getName(), favorite.getAvatarUrl(), favorite.getAddress(), favorite.getPhone(), favorite.getFacebook(), favorite.getAboutMeTxt(), true);
     }
-
-
     //configure click on recycler view
     public void configureOnClickRecyclerView() {
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)

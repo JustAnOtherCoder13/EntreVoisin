@@ -2,13 +2,12 @@ package com.openclassrooms.entrevoisins.events;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
-
-
 public class ItemClickSupport {
     private final RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;
     private OnItemLongClickListener mOnItemLongClickListener;
     private int mItemID;
+
     private View.OnClickListener mOnClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -39,20 +38,15 @@ public class ItemClickSupport {
                 view.setOnLongClickListener(mOnLongClickListener);
             }
         }
-
         @Override
-        public void onChildViewDetachedFromWindow(View view) {
-
-        }
+        public void onChildViewDetachedFromWindow(View view) { }
     };
-
     private ItemClickSupport(RecyclerView recyclerView, int itemID) {
         mRecyclerView = recyclerView;
         mItemID = itemID;
         mRecyclerView.setTag(itemID, this);
         mRecyclerView.addOnChildAttachStateChangeListener(mAttachListener);
     }
-
     public static ItemClickSupport addTo(RecyclerView view, int itemID) {
         ItemClickSupport support = (ItemClickSupport) view.getTag(itemID);
         if (support == null) {
@@ -60,7 +54,6 @@ public class ItemClickSupport {
         }
         return support;
     }
-
     public static ItemClickSupport removeFrom(RecyclerView view, int itemID) {
         ItemClickSupport support = (ItemClickSupport) view.getTag(itemID);
         if (support != null) {
@@ -68,29 +61,19 @@ public class ItemClickSupport {
         }
         return support;
     }
-
     public ItemClickSupport setOnItemClickListener(OnItemClickListener listener) {
         mOnItemClickListener = listener;
         return this;
     }
-
     public ItemClickSupport setOnItemLongClickListener(OnItemLongClickListener listener) {
         mOnItemLongClickListener = listener;
         return this;
     }
-
     private void detach(RecyclerView view) {
         view.removeOnChildAttachStateChangeListener(mAttachListener);
         view.setTag(mItemID, null);
     }
+    public interface OnItemClickListener {void onItemClicked(RecyclerView recyclerView, int position, View v);}
 
-    public interface OnItemClickListener {
-
-        void onItemClicked(RecyclerView recyclerView, int position, View v);
-    }
-
-    public interface OnItemLongClickListener {
-
-        boolean onItemLongClicked(RecyclerView recyclerView, int position, View v);
-    }
+    public interface OnItemLongClickListener { boolean onItemLongClicked(RecyclerView recyclerView, int position, View v);}
 }

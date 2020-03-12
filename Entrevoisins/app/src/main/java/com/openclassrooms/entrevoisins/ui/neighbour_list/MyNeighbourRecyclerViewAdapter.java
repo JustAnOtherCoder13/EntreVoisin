@@ -26,9 +26,7 @@ public class MyNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyNeigh
 
     private final List<Neighbour> mNeighbours;
 
-    MyNeighbourRecyclerViewAdapter(List<Neighbour> items) {
-        mNeighbours = items;
-    }
+    MyNeighbourRecyclerViewAdapter(List<Neighbour> items) { mNeighbours = items; }
 
     @NonNull
     @Override

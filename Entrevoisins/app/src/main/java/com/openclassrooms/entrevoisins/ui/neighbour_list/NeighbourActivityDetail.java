@@ -25,7 +25,6 @@ import butterknife.ButterKnife;
 
 public class NeighbourActivityDetail extends AppCompatActivity {
 
-
     @BindView(R.id.item_list_avatar)
     ImageView mItemListAvatar;
     @BindView(R.id.item_list_name)
@@ -52,10 +51,9 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         Random random = new Random();
         setContentView(R.layout.activity_neighbour_detail);
-        //create bundle and get position
+        //create bundle and get position and page
         Bundle arguments = getIntent().getExtras();
         assert arguments != null;
         int position = arguments.getInt("position", -1);
@@ -69,8 +67,8 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         mItemListNameDetail.setText(mNeighbour.getName());
         mItemListNameDetailLocalisation.setText(mNeighbour.getAddress());
         mItemListNameDetailMail.setText(mNeighbour.getFacebook().concat(mNeighbour.getName().toLowerCase()));
-        mItemListNameDetailPhone.setText(mNeighbour.getPhone().concat(String.valueOf(random.nextInt(100))).concat(" ").concat(String.valueOf(random.nextInt(90) + 10)).concat(" ").concat(String.valueOf(random.nextInt(90) + 10)).concat(" ").concat(String.valueOf(random.nextInt(90) + 10)));
-        //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
+        mItemListNameDetailPhone.setText(mNeighbour.getPhone().concat(phoneNumber()));
+                //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
         Glide.with(mItemListAvatar.getContext())
                 .load(mNeighbour.getAvatarUrl())
                 .fitCenter()
@@ -80,7 +78,6 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         //postSticky to get the post in memory since it is unregistered manually
         mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().postSticky(new AddFavoriteEvent(mNeighbour)));
     }
-
     //method to catch the neighbour clicked
     private Neighbour getUser(int position, int page) {
         if (page == 0) {
@@ -91,8 +88,30 @@ public class NeighbourActivityDetail extends AppCompatActivity {
             return favoriteNeighbour.get(position);
         }
     }
-
     private void backToMain() {
         this.finish();
+    }
+
+    //method to get random phone number
+    private String phoneNumber(){
+        int i;
+        String phoneNumber = "00";
+        String firstNumber = "00";
+        Random random = new Random();
+
+        for (i=0; i < 4; i++){
+            String nb = String.valueOf(random.nextInt(90)+10);
+            if (i == 0) {
+                 firstNumber = nb;
+            }
+            else if (i == 1)
+            {
+                phoneNumber = firstNumber.concat(" ").concat(nb);
+            }
+            else {
+                phoneNumber = phoneNumber.concat(" ").concat(nb);
+            }
+        }
+        return phoneNumber;
     }
 }
