@@ -42,7 +42,6 @@ public class NeighboursListTest {
     private ViewInteraction listFavorite = onView(withId(R.id.list_favorites));
     private ViewInteraction listNeighbour = onView(withId(R.id.list_neighbours));
 
-
     @Rule
     public ActivityTestRule<ListNeighbourActivity> mActivityRule =
             new ActivityTestRule(ListNeighbourActivity.class);
@@ -51,7 +50,6 @@ public class NeighboursListTest {
     public void setUp() {
         mActivity = mActivityRule.getActivity();
     }
-
     /**
      * We ensure that our recyclerview is displaying at least on item
      */
@@ -94,14 +92,14 @@ public class NeighboursListTest {
         //perform click on deleteButton on first favorite
         listFavorite
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()))
-                .check(withItemCount(FAV_COUNT - 1));
+                .check(withItemCount(0));
         //ensure neighbourList is always full
         listNeighbour
-                .check(withItemCount(ITEMS_COUNT));
+                .check(withItemCount(ITEMS_COUNT-1));
     }
 
     @Test
-    public void Neighbour_click_shouldOpen_NeighbourActivityDetail_onSamNeighbour() {
+    public void Neighbour_click_shouldOpen_NeighbourActivityDetail_onSameNeighbour() {
         // perform click on the neighbour at index 1
         listNeighbour
                 .perform(RecyclerViewActions.actionOnItemAtPosition(1, click()));
@@ -110,7 +108,7 @@ public class NeighboursListTest {
                 .check(matches(isDisplayed()));
         // ensure that the name in the textView is what we expected
         onView(withId(R.id.item_list_name))
-                .check(matches(withText("Jack")));
+                .check(matches(withText("Chloé")));
         //ensure that return button work well
         onView(withId(R.id.item_list_return_button))
                 .perform(click());
@@ -118,10 +116,7 @@ public class NeighboursListTest {
 
     @Test
     public void Favorite_list_should_onlyContained_favoriteNeighbours() {
-        //delete the first and second neighbour of the list
-        listNeighbour
-                .perform(RecyclerViewActions.actionOnItemAtPosition(1, new DeleteViewAction()))
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()));
+
         //ensure fav list is empty
         listFavorite
                 .check(withItemCount(0));
@@ -143,6 +138,6 @@ public class NeighboursListTest {
         listFavorite
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
         onView(withId(R.id.item_list_name))
-                .check(matches(withText("Elodie")));
+                .check(matches(withText("Vincent")));
     }
 }
