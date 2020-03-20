@@ -55,7 +55,7 @@
             android:id="@+id/item_detail_card_view"
             style="@style/Card_view_style"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/item_list_avatar">
 
@@ -93,9 +93,10 @@
 
                 <TextView
                     android:id="@+id/item_list_name_detail_localisation_txt"
-                    android:layout_width="250dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/view_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/item_list_name_detail_localisation_img"
                     app:layout_constraintTop_toTopOf="@+id/item_list_name_detail_localisation_img" />
 
@@ -111,9 +112,10 @@
 
                 <TextView
                     android:id="@+id/item_list_name_detail_phone_txt"
-                    android:layout_width="250dp"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/view_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/item_list_name_detail_phone_img"
                     app:layout_constraintTop_toTopOf="@+id/item_list_name_detail_phone_img" />
 
@@ -123,6 +125,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/view_margin"
                     android:layout_marginTop="@dimen/view_big_margin"
+                    android:layout_marginBottom="@dimen/view_margin"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/item_list_name_detail_phone_img"
                     app:srcCompat="@drawable/ic_language_black_24dp" />

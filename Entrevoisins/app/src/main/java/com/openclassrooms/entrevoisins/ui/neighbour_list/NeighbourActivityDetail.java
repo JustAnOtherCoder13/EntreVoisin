@@ -88,32 +88,39 @@ public class NeighbourActivityDetail extends AppCompatActivity {
             List<Neighbour> neighbourList = mApiService.getNeighbours();
             return neighbourList.get(position);
         } else {
-            List<Neighbour> favoriteNeighbour = mApiService.getFavorite();
+            List<Neighbour> favoriteNeighbour = mApiService.getFavorites();
             return favoriteNeighbour.get(position);
         }
     }
+
     private void backToMain() {
         this.finish();
     }
 
     //method to get random phone number
-    private String phoneNumber(){
+    private String phoneNumber() {
+
         int i;
+        String number;
         String phoneNumber = "00";
         String firstNumber = "00";
         Random random = new Random();
 
-        for (i=0; i < 4; i++){
-            String nb = String.valueOf(random.nextInt(90)+10);
-            if (i == 0) {
-                 firstNumber = nb;
-            }
-            else if (i == 1)
-            {
-                phoneNumber = firstNumber.concat(" ").concat(nb);
-            }
-            else {
-                phoneNumber = phoneNumber.concat(" ").concat(nb);
+        for (i = 0; i < 4; i++) {
+
+            int nb = random.nextInt(100);
+            if (nb < 10) number = "0".concat(String.valueOf(nb));
+            else number = String.valueOf(nb);
+
+            switch (i){
+                case 0 :
+                    firstNumber = number;
+                    break;
+                case 1 :
+                    phoneNumber = firstNumber.concat(" ").concat(number);
+                    break;
+                default :
+                    phoneNumber = phoneNumber.concat(" ").concat(number);
             }
         }
         return phoneNumber;

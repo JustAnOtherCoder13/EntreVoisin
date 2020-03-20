@@ -34,7 +34,5 @@ abstract class DummyNeighbourGenerator {
     );
 
     //return the list in ArrayList to perform changes.
-    static List<Neighbour> generateFavorite() {
-        return new ArrayList<>(DUMMY_FAVORITE_NEIGHBOURS);
-    }
+    static List<Neighbour> generateFavorites() { return new ArrayList<>(DUMMY_FAVORITE_NEIGHBOURS); }
 }

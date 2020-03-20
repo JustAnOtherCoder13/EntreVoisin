@@ -76,7 +76,7 @@ public class NeighbourFragment extends Fragment {
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
             mRecyclerView.setId(R.id.list_neighbours);
         } else {
-            mNeighbours = mApiService.getFavorite();
+            mNeighbours = mApiService.getFavorites();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
             mRecyclerView.setId(R.id.list_favorites);
 
@@ -149,8 +149,8 @@ public class NeighbourFragment extends Fragment {
 
     //re attribute fav list id in order to have two list with different id
     private void reAttributeFavoriteId() {
-        for (int i = 0; i < mApiService.getFavorite().size(); i++) {
-            mApiService.getFavorite().get(i).setId(i);
+        for (int i = 0; i < mApiService.getFavorites().size(); i++) {
+            mApiService.getFavorites().get(i).setId(i);
         }
     }
 
@@ -158,11 +158,11 @@ public class NeighbourFragment extends Fragment {
     private Neighbour searchNeighbourInFavList(String name, String address) {
 
         Neighbour neighbourToSend = null;
-        for (int i = 0; i < mApiService.getFavorite().size(); i++) {
-            String nameToCompare = mApiService.getFavorite().get(i).getName();
-            String addressToCompare = mApiService.getFavorite().get(i).getAddress();
+        for (int i = 0; i < mApiService.getFavorites().size(); i++) {
+            String nameToCompare = mApiService.getFavorites().get(i).getName();
+            String addressToCompare = mApiService.getFavorites().get(i).getAddress();
             if (address.equals(addressToCompare) && name.equals(nameToCompare)) {
-                neighbourToSend = mApiService.getFavorite().get(i);
+                neighbourToSend = mApiService.getFavorites().get(i);
             }
         }
         return neighbourToSend;

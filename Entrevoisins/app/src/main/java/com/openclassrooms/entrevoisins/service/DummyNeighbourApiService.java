@@ -11,7 +11,7 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
 
     private List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
             //declare favorites and initiate it to get the favorite list in the dummy generator
-    private List<Neighbour> favorites = DummyNeighbourGenerator.generateFavorite();
+    private List<Neighbour> favorites = DummyNeighbourGenerator.generateFavorites();
     /**
      * {@inheritDoc}
      */
@@ -21,7 +21,7 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     }
         //implement getFavorite to return favorites list
     @Override
-    public List<Neighbour> getFavorite() { return favorites; }
+    public List<Neighbour> getFavorites() { return favorites; }
     /**
      * {@inheritDoc}
      */
