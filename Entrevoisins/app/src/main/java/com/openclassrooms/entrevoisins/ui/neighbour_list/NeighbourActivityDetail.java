@@ -51,7 +51,6 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Random random = new Random();
         setContentView(R.layout.activity_neighbour_detail);
         //create bundle and get position and page
         Bundle arguments = getIntent().getExtras();
@@ -63,21 +62,26 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         mNeighbour = getUser(position, page);
         //bind and fill the view
         ButterKnife.bind(this);
-        mItemListName.setText(mNeighbour.getName());
-        mItemListNameDetail.setText(mNeighbour.getName());
-        mItemListNameDetailLocalisation.setText(mNeighbour.getAddress());
-        mItemListNameDetailMail.setText(mNeighbour.getFacebook().concat(mNeighbour.getName().toLowerCase()));
-        mItemListNameDetailPhone.setText(mNeighbour.getPhone().concat(phoneNumber()));
-                //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
-        Glide.with(mItemListAvatar.getContext())
-                .load(mNeighbour.getAvatarUrl())
-                .fitCenter()
-                .into(mItemListAvatar);
+        initView();
         //use listener to close activity by clicking return button
         mReturnButton.setOnClickListener(v -> backToMain());
         //postSticky to get the post in memory since it is unregistered manually
         mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().postSticky(new AddFavoriteEvent(mNeighbour)));
     }
+
+    private void initView() {
+        mItemListName.setText(mNeighbour.getName());
+        mItemListNameDetail.setText(mNeighbour.getName());
+        mItemListNameDetailLocalisation.setText(mNeighbour.getAddress());
+        mItemListNameDetailMail.setText(mNeighbour.getFacebook().concat(mNeighbour.getName().toLowerCase()));
+        mItemListNameDetailPhone.setText(mNeighbour.getPhone().concat(phoneNumber()));
+        //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
+        Glide.with(mItemListAvatar.getContext())
+                .load(mNeighbour.getAvatarUrl())
+                .fitCenter()
+                .into(mItemListAvatar);
+    }
+
     //method to catch the neighbour clicked
     private Neighbour getUser(int position, int page) {
         if (page == 0) {
