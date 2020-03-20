@@ -6,11 +6,8 @@ import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v7.widget.RecyclerView;
 
 import com.openclassrooms.entrevoisins.R;
-import com.openclassrooms.entrevoisins.model.Neighbour;
-import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 import com.openclassrooms.entrevoisins.ui.neighbour_list.ListNeighbourActivity;
 import com.openclassrooms.entrevoisins.utils.DeleteViewAction;
 
@@ -18,8 +15,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -42,9 +37,7 @@ public class NeighboursListTest {
     // This is fixed
     private static int ITEMS_COUNT = 12;
     private static int FAV_COUNT = 2;
-    private List<Neighbour> mNeighbours;
-    private NeighbourApiService mApiService;
-    private RecyclerView mRecyclerView;
+
 
     private ListNeighbourActivity mActivity;
     private ViewInteraction listFavorite = onView(withId(R.id.list_favorites));
