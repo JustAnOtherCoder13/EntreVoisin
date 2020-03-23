@@ -7,12 +7,13 @@ import java.util.List;
 /**
  * Dummy mock for the Api
  */
-public enum  DummyNeighbourApiService implements  NeighbourApiService {
+public enum DummyNeighbourApiService implements NeighbourApiService {
     INSTANCE;
 
-    private List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
-            //declare favorites and initiate it to get the favorite list in the dummy generator
-    private List<Neighbour> favorites = DummyNeighbourGenerator.generateFavorites();
+    List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
+    //declare favorites and initiate it to get the favorite list in the dummy generator
+    List<Neighbour> favorites = DummyNeighbourGenerator.generateFavorites();
+
     /**
      * {@inheritDoc}
      */
@@ -20,18 +21,28 @@ public enum  DummyNeighbourApiService implements  NeighbourApiService {
     public List<Neighbour> getNeighbours() {
         return neighbours;
     }
-        //implement getFavorite to return favorites list
+
+    //implement getFavorite to return favorites list
     @Override
-    public List<Neighbour> getFavorites() { return favorites; }
+    public List<Neighbour> getFavorites() {
+        return favorites;
+    }
+
     /**
      * {@inheritDoc}
      */
     @Override
-    public void deleteNeighbour(Neighbour neighbour) { neighbours.remove(neighbour); }
+    public void deleteNeighbour(Neighbour neighbour) {
+        neighbours.remove(neighbour);
+    }
 
     @Override
-    public void deleteFavorite(Neighbour neighbour) { favorites.remove(neighbour); }
+    public void deleteFavorite(Neighbour neighbour) {
+        favorites.remove(neighbour);
+    }
 
     @Override
-    public void addFavorite(Neighbour neighbour) { favorites.add(neighbour); }
+    public void addFavorite(Neighbour neighbour) {
+        favorites.add(neighbour);
+    }
 }

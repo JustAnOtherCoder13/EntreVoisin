@@ -8,8 +8,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.openclassrooms.entrevoisins.R;
-import com.openclassrooms.entrevoisins.di.DI;
-import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 import com.openclassrooms.entrevoisins.ui.neighbour_list.ListNeighbourActivity;
 import com.openclassrooms.entrevoisins.utils.DeleteViewAction;
 
@@ -39,7 +37,6 @@ public class NeighboursListTest {
     // This is fixed
     private static int ITEMS_COUNT = 12;
     private static int FAV_COUNT = 2;
-    //private NeighbourApiService service;
 
     private ListNeighbourActivity mActivity;
     private ViewInteraction listFavorite = onView(withId(R.id.list_favorites));
@@ -52,8 +49,8 @@ public class NeighboursListTest {
     @Before
     public void setUp() {
         mActivity = mActivityRule.getActivity();
-        //service = DI.getNewInstanceApiService();
     }
+
     /**
      * We ensure that our recyclerview is displaying at least on item
      */
@@ -87,6 +84,7 @@ public class NeighboursListTest {
         listFavorite
                 .check(withItemCount(FAV_COUNT - 1));
     }
+
     @Test
     public void myFavoriteList_deleteAction_shouldRemoveItem_onlyInFavList() {
 
@@ -99,7 +97,7 @@ public class NeighboursListTest {
                 .check(withItemCount(0));
         //ensure neighbourList is always full
         listNeighbour
-                .check(withItemCount(ITEMS_COUNT-1));
+                .check(withItemCount(ITEMS_COUNT - 1));
     }
 
     @Test
@@ -140,7 +138,7 @@ public class NeighboursListTest {
                 .perform(swipeLeft());
         //ensure we' ve had the good neighbour
         listFavorite
-                .perform(RecyclerViewActions.actionOnItemAtPosition(0,click()));
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.item_list_name))
                 .check(matches(withText("Vincent")));
     }

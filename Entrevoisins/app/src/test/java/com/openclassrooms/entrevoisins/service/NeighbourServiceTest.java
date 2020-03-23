@@ -26,8 +26,10 @@ public class NeighbourServiceTest {
 
     @Before
     public void setup() {
+
         service = DI.getNewInstanceApiService();
     }
+
 
     @Test
     public void getNeighboursWithSuccess() {
