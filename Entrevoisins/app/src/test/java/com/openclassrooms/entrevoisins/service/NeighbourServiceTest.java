@@ -1,6 +1,5 @@
 package com.openclassrooms.entrevoisins.service;
 
-import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
@@ -26,8 +25,21 @@ public class NeighbourServiceTest {
 
     @Before
     public void setup() {
+        List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
+        List<Neighbour> favorites = DummyNeighbourGenerator.generateFavorites();
 
-        service = DI.getNewInstanceApiService();
+          service = new NeighbourApiService() {
+            @Override
+            public List<Neighbour> getNeighbours() { return neighbours; }
+            @Override
+            public List<Neighbour> getFavorites() { return favorites; }
+            @Override
+            public void deleteNeighbour(Neighbour neighbour) { neighbours.remove(neighbour); }
+            @Override
+            public void deleteFavorite(Neighbour neighbour) { favorites.remove(neighbour); }
+            @Override
+            public void addFavorite(Neighbour neighbour) { favorites.add(neighbour); }
+        };
     }
 
 
