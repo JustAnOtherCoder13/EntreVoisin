@@ -2,6 +2,7 @@ package com.openclassrooms.entrevoisins.ui.neighbour_list;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -43,7 +44,7 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     @BindView(R.id.item_list_return_button)
     ImageButton mReturnButton;
     @BindView(R.id.item_list_favorite_button)
-    ImageButton mFavoriteButton;
+    FloatingActionButton mFavoriteButton;
 
     private NeighbourApiService mApiService;
     private Neighbour mNeighbour;
@@ -66,7 +67,7 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         //use listener to close activity by clicking return button
         mReturnButton.setOnClickListener(v -> backToMain());
         //postSticky to get the post in memory since it is unregistered manually
-        mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().postSticky(new AddFavoriteEvent(mNeighbour)));
+        mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().postSticky(new AddFavoriteEvent(mNeighbour,mFavoriteButton)));
     }
 
     private void initView() {
@@ -85,11 +86,11 @@ public class NeighbourActivityDetail extends AppCompatActivity {
     //method to catch the neighbour clicked
     private Neighbour getUser(int position, int page) {
         if (page == 0) {
-            List<Neighbour> neighbourList = mApiService.getNeighbours();
-            return neighbourList.get(position);
+            List<Neighbour> neighboursList = mApiService.getNeighbours();
+            return neighboursList.get(position);
         } else {
-            List<Neighbour> favoriteNeighbour = mApiService.getFavorites();
-            return favoriteNeighbour.get(position);
+            List<Neighbour> favoritesList = mApiService.getFavorites();
+            return favoritesList.get(position);
         }
     }
 

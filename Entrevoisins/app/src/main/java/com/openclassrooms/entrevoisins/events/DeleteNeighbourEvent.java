@@ -9,16 +9,12 @@ public class DeleteNeighbourEvent {
      * Neighbour to delete
      */
     public Neighbour neighbour;
-    public int position;
-    public int neighbourId;
     /**
      * Constructor.
      * @param neighbour
      */
-    public DeleteNeighbourEvent(Neighbour neighbour, int position, int neighbourId) {
+    public DeleteNeighbourEvent(Neighbour neighbour) {
 
-        this.position = position;
         this.neighbour = neighbour;
-        this.neighbourId = neighbourId;
     }
 }

@@ -31,7 +31,6 @@ public class NeighbourFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private int mPagePosition;
     List<Neighbour> mNeighbours;
-
     /**
      * Create and return a new instance
      *
@@ -79,7 +78,6 @@ public class NeighbourFragment extends Fragment {
             mNeighbours = mApiService.getFavorites();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
             mRecyclerView.setId(R.id.list_favorites);
-
         }
     }
 
@@ -114,18 +112,13 @@ public class NeighbourFragment extends Fragment {
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
 
         initList();
-        int eventId = event.neighbourId;
-        int idToCompare = -1;
         boolean isNeighbourIsFav = event.neighbour.isFavorite();
         Neighbour neighbourInFavList = searchNeighbourInFavList(event.neighbour.getName(), event.neighbour.getAddress());
 
-        if (mApiService.getNeighbours().contains(event.neighbour)) {
-            idToCompare = mApiService.getNeighbours().get(event.position).getId();
-        }
         if (isNeighbourIsFav) {
             mApiService.deleteFavorite(neighbourInFavList);
             event.neighbour.setFavorite(false);
-        } else if (!isNeighbourIsFav && eventId == idToCompare) {
+        } else  {
             mApiService.deleteNeighbour(event.neighbour);
         }
     }
@@ -138,7 +131,7 @@ public class NeighbourFragment extends Fragment {
     @Subscribe(sticky = true)
     public void onAddFavorite(AddFavoriteEvent event) {
 
-        if (searchNeighbourInFavList(event.neighbour.getName(), event.neighbour.getAddress()) == null) {
+        if (!event.neighbour.isFavorite()) {
             Neighbour newFav = newFavoriteInstance(event.neighbour);
             mApiService.addFavorite(newFav);
             event.neighbour.setFavorite(true);
