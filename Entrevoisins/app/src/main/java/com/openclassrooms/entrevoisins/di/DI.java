@@ -7,7 +7,7 @@ import com.openclassrooms.entrevoisins.service.NeighbourApiService;
  * Dependency injector to get instance of services
  */
 public class DI {
-    private static NeighbourApiService service = DummyNeighbourApiService.INSTANCE;
+    private static NeighbourApiService service = new DummyNeighbourApiService();
     /**
      * Get an instance on @{@link NeighbourApiService}
      * @return

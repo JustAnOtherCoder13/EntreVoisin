@@ -7,12 +7,12 @@ import java.util.List;
 /**
  * Dummy mock for the Api
  */
-public enum DummyNeighbourApiService implements NeighbourApiService {
-    INSTANCE;
+public class DummyNeighbourApiService implements NeighbourApiService {
 
-    List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
+
+    private List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
     //declare favorites and initiate it to get the favorite list in the dummy generator
-    List<Neighbour> favorites = DummyNeighbourGenerator.generateFavorites();
+    private List<Neighbour> favorites = DummyNeighbourGenerator.generateFavorites();
 
     /**
      * {@inheritDoc}

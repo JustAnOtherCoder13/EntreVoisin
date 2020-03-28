@@ -24,23 +24,7 @@ public class NeighbourServiceTest {
     private NeighbourApiService service;
 
     @Before
-    public void setup() {
-        List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
-        List<Neighbour> favorites = DummyNeighbourGenerator.generateFavorites();
-
-          service = new NeighbourApiService() {
-            @Override
-            public List<Neighbour> getNeighbours() { return neighbours; }
-            @Override
-            public List<Neighbour> getFavorites() { return favorites; }
-            @Override
-            public void deleteNeighbour(Neighbour neighbour) { neighbours.remove(neighbour); }
-            @Override
-            public void deleteFavorite(Neighbour neighbour) { favorites.remove(neighbour); }
-            @Override
-            public void addFavorite(Neighbour neighbour) { favorites.add(neighbour); }
-        };
-    }
+    public void setup() { service = new DummyNeighbourApiService();}
 
 
     @Test

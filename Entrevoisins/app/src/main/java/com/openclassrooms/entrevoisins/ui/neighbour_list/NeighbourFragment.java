@@ -43,13 +43,11 @@ public class NeighbourFragment extends Fragment {
         frag.setArguments(bundle);
         return frag;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -63,7 +61,6 @@ public class NeighbourFragment extends Fragment {
         this.configureOnClickRecyclerView();
         return view;
     }
-
     /**
      * Init the List of neighbours
      */
@@ -73,20 +70,16 @@ public class NeighbourFragment extends Fragment {
         if (mPagePosition == 0) {
             mNeighbours = mApiService.getNeighbours();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
-            mRecyclerView.setId(R.id.list_neighbours);
         } else {
             mNeighbours = mApiService.getFavorites();
             mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
-            mRecyclerView.setId(R.id.list_favorites);
         }
     }
-
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
     }
-
     @Override
     public void onPause() {
         super.onPause();
@@ -96,13 +89,11 @@ public class NeighbourFragment extends Fragment {
             EventBus.getDefault().removeStickyEvent(stickyEvent);
         }
     }
-
     @Override
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
     /**
      * Fired if the user clicks on a delete button
      *
@@ -122,7 +113,6 @@ public class NeighbourFragment extends Fragment {
             mApiService.deleteNeighbour(event.neighbour);
         }
     }
-
     /**
      * Fired if the user clicks on favorite button
      *
@@ -132,21 +122,19 @@ public class NeighbourFragment extends Fragment {
     public void onAddFavorite(AddFavoriteEvent event) {
 
         if (!event.neighbour.isFavorite()) {
-            Neighbour newFav = newFavoriteInstance(event.neighbour);
-            mApiService.addFavorite(newFav);
+            Neighbour favoriteNeighbour = createFavoriteNeighbour(event.neighbour);
+            mApiService.addFavorite(favoriteNeighbour);
             event.neighbour.setFavorite(true);
             reAttributeFavoriteId();
         }
         initList();
     }
-
     //re attribute fav list id in order to have two list with different id
     private void reAttributeFavoriteId() {
         for (int i = 0; i < mApiService.getFavorites().size(); i++) {
             mApiService.getFavorites().get(i).setId(i);
         }
     }
-
     //search neighbour in fav list with a name and address, if two matches, return the neighbour of fav list
     private Neighbour searchNeighbourInFavList(String name, String address) {
 
@@ -160,12 +148,10 @@ public class NeighbourFragment extends Fragment {
         }
         return neighbourToSend;
     }
-
     //create a new Neighbour instance to add in fav list
-    public Neighbour newFavoriteInstance(Neighbour favorite) {
+    public Neighbour createFavoriteNeighbour(Neighbour favorite) {
         return new Neighbour(favorite.getId(), favorite.getName(), favorite.getAvatarUrl(), favorite.getAddress(), favorite.getPhone(), favorite.getFacebook(), favorite.getAboutMeTxt(), true);
     }
-
     //configure click on recycler view
     public void configureOnClickRecyclerView() {
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)

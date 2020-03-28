@@ -69,20 +69,18 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         //postSticky to get the post in memory since it is unregistered manually
         mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().postSticky(new AddFavoriteEvent(mNeighbour,mFavoriteButton)));
     }
-
     private void initView() {
         mItemListName.setText(mNeighbour.getName());
         mItemListNameDetail.setText(mNeighbour.getName());
         mItemListNameDetailLocalisation.setText(mNeighbour.getAddress());
         mItemListNameDetailMail.setText(mNeighbour.getFacebook().concat(mNeighbour.getName().toLowerCase()));
         mItemListNameDetailPhone.setText(mNeighbour.getPhone().concat(phoneNumber()));
-        //mItemListPresentationAboutMe.setText(neighbour.getAboutMeTxt());
+        mItemListPresentationAboutMe.getResources().getString(R.string.a_propos_de_moi_txt);
         Glide.with(mItemListAvatar.getContext())
                 .load(mNeighbour.getAvatarUrl())
                 .fitCenter()
                 .into(mItemListAvatar);
     }
-
     //method to catch the neighbour clicked
     private Neighbour getUser(int position, int page) {
         if (page == 0) {
@@ -93,14 +91,11 @@ public class NeighbourActivityDetail extends AppCompatActivity {
             return favoritesList.get(position);
         }
     }
-
     private void backToMain() {
         this.finish();
     }
-
     //method to get random phone number
     private String phoneNumber() {
-
         int i;
         String number;
         String phoneNumber = "00";
@@ -108,7 +103,6 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         Random random = new Random();
 
         for (i = 0; i < 4; i++) {
-
             int nb = random.nextInt(100);
             if (nb < 10) number = "0".concat(String.valueOf(nb));
             else number = String.valueOf(nb);
