@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
@@ -31,6 +32,7 @@ public class NeighbourFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private int mPagePosition;
     List<Neighbour> mNeighbours;
+    private RecyclerView.Adapter mAdapter;
     /**
      * Create and return a new instance
      *
@@ -47,6 +49,7 @@ public class NeighbourFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
+        mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -102,17 +105,26 @@ public class NeighbourFragment extends Fragment {
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
 
-        initList();
+        //initList();
+
         boolean isNeighbourIsFav = event.neighbour.isFavorite();
         Neighbour neighbourInFavList = searchNeighbourInFavList(event.neighbour.getName(), event.neighbour.getAddress());
 
         if (isNeighbourIsFav) {
             mApiService.deleteFavorite(neighbourInFavList);
+            notifyChanges();
             event.neighbour.setFavorite(false);
         } else  {
             mApiService.deleteNeighbour(event.neighbour);
         }
+        notifyChanges();
     }
+
+    private void notifyChanges() {
+        //mNeighbours = mApiService.getNeighbours();
+        new MyNeighbourRecyclerViewAdapter(mNeighbours).notifyDataSetChanged();
+    }
+
     /**
      * Fired if the user clicks on favorite button
      *
@@ -127,7 +139,8 @@ public class NeighbourFragment extends Fragment {
             event.neighbour.setFavorite(true);
             reAttributeFavoriteId();
         }
-        initList();
+        //initList();
+        notifyChanges();
     }
     //re attribute fav list id in order to have two list with different id
     private void reAttributeFavoriteId() {
@@ -156,6 +169,7 @@ public class NeighbourFragment extends Fragment {
     public void configureOnClickRecyclerView() {
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
+                    notifyChanges();
                     Bundle bundle = new Bundle();
                     Bundle bundle1 = new Bundle();
                     bundle1.putInt("pagePosition", mPagePosition);
