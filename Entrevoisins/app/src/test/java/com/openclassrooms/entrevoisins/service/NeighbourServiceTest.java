@@ -1,5 +1,6 @@
 package com.openclassrooms.entrevoisins.service;
 
+import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 
 import org.hamcrest.collection.IsIterableContainingInAnyOrder;
@@ -24,7 +25,7 @@ public class NeighbourServiceTest {
     private NeighbourApiService service;
 
     @Before
-    public void setup() { service = new DummyNeighbourApiService();}
+    public void setup() { service = DI.getNewInstanceApiService();}
 
 
     @Test
