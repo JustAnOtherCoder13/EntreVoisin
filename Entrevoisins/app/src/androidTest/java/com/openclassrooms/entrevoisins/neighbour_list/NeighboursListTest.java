@@ -10,6 +10,7 @@ import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.ui.neighbour_list.ListNeighbourActivity;
 import com.openclassrooms.entrevoisins.utils.DeleteViewAction;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -53,6 +54,11 @@ public class NeighboursListTest {
         //listFavorite = onView(withId(R.id.list_favorites));
         //listNeighbour = onView(withId(R.id.list_neighbours));
     }
+   /* @After
+    public void stopActivity(){
+        mActivity.finish();
+
+    }*/
 
     /**
      * We ensure that our recyclerview is displaying at least one item
