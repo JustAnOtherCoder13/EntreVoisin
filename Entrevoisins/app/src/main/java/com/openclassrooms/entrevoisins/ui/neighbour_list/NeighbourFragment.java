@@ -48,7 +48,8 @@ public class NeighbourFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mApiService = DI.getNeighbourApiService();
-        mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);
+        assert getArguments() != null;
+        mPagePosition = getArguments().getInt("pagePosition", -1);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -58,6 +59,7 @@ public class NeighbourFragment extends Fragment {
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+
         initList();
         //use method to configure OnClickRecyclerView
         this.configureOnClickRecyclerView();
@@ -67,15 +69,14 @@ public class NeighbourFragment extends Fragment {
      * Init the List of neighbours
      */
     private void initList() {
-        assert getArguments() != null;
-        mPagePosition = getArguments().getInt("pagePosition", -1);
+
         if (mPagePosition == 0) {
             mNeighbours = mApiService.getNeighbours();
-            mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
         } else {
             mNeighbours = mApiService.getFavorites();
-            mRecyclerView.setAdapter(new MyNeighbourRecyclerViewAdapter(mNeighbours));
         }
+        mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);
+        mRecyclerView.setAdapter(mAdapter);
     }
     @Override
     public void onStart() {
@@ -104,25 +105,18 @@ public class NeighbourFragment extends Fragment {
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
 
-        //initList();
-
         boolean isNeighbourIsFav = event.neighbour.isFavorite();
         Neighbour neighbourInFavList = searchNeighbourInFavList(event.neighbour.getName(), event.neighbour.getAddress());
 
         if (isNeighbourIsFav) {
             mApiService.deleteFavorite(neighbourInFavList);
-            notifyChanges();
             event.neighbour.setFavorite(false);
         } else  {
             mApiService.deleteNeighbour(event.neighbour);
         }
-        notifyChanges();
+        mAdapter.notifyDataSetChanged();
     }
 
-    private void notifyChanges() {
-        //mNeighbours = mApiService.getNeighbours();
-        new MyNeighbourRecyclerViewAdapter(mNeighbours).notifyDataSetChanged();
-    }
 
     /**
      * Fired if the user clicks on favorite button
@@ -131,15 +125,13 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe(sticky = true)
     public void onAddFavorite(AddFavoriteEvent event) {
-
         if (!event.neighbour.isFavorite()) {
             Neighbour favoriteNeighbour = createFavoriteNeighbour(event.neighbour);
             mApiService.addFavorite(favoriteNeighbour);
             event.neighbour.setFavorite(true);
             reAttributeFavoriteId();
         }
-        //initList();
-        notifyChanges();
+        mAdapter.notifyDataSetChanged();
     }
     //re attribute fav list id in order to have two list with different id
     private void reAttributeFavoriteId() {
@@ -168,7 +160,6 @@ public class NeighbourFragment extends Fragment {
     public void configureOnClickRecyclerView() {
         ItemClickSupport.addTo(mRecyclerView, R.layout.fragment_neighbour_list)
                 .setOnItemClickListener((recyclerView, position, v) -> {
-                    notifyChanges();
                     Bundle bundle = new Bundle();
                     Bundle bundle1 = new Bundle();
                     bundle1.putInt("pagePosition", mPagePosition);
