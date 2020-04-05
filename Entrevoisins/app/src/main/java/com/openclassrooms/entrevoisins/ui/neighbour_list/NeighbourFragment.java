@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,7 @@ public class NeighbourFragment extends Fragment {
         mApiService = DI.getNeighbourApiService();
         assert getArguments() != null;
         mPagePosition = getArguments().getInt("pagePosition", -1);
+        Log.i("test", "onCreate: "+mPagePosition);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -111,6 +113,7 @@ public class NeighbourFragment extends Fragment {
         Neighbour neighbourInFavList = searchNeighbourInFavList(event.neighbour.getName(), event.neighbour.getAddress());
 
         if (isNeighbourIsFav) {
+            Log.i("test", "onDeleteNeighbour: "+mPagePosition);
             mApiService.deleteFavorite(neighbourInFavList);
             event.neighbour.setFavorite(false);
         } else  {
