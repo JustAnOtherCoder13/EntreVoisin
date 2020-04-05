@@ -72,8 +72,10 @@ public class NeighbourFragment extends Fragment {
 
         if (mPagePosition == 0) {
             mNeighbours = mApiService.getNeighbours();
+            mRecyclerView.setId(R.id.list_neighbours);
         } else {
             mNeighbours = mApiService.getFavorites();
+            mRecyclerView.setId(R.id.list_favorites);
         }
         mAdapter = new MyNeighbourRecyclerViewAdapter(mNeighbours);
         mRecyclerView.setAdapter(mAdapter);
