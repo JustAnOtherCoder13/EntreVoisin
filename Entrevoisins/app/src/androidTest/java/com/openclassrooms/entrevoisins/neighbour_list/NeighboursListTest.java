@@ -1,6 +1,9 @@
 
 package com.openclassrooms.entrevoisins.neighbour_list;
 
+import android.content.Context;
+import android.content.Intent;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
@@ -14,11 +17,13 @@ import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 import com.openclassrooms.entrevoisins.ui.neighbour_list.ListNeighbourActivity;
 import com.openclassrooms.entrevoisins.utils.DeleteViewAction;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static android.support.test.espresso.Espresso.onView;
@@ -52,21 +57,17 @@ public class NeighboursListTest {
 
   @Rule
   public ActivityTestRule<ListNeighbourActivity> mActivityRule =
-          new ActivityTestRule(ListNeighbourActivity.class,false,true);
+          new ActivityTestRule(ListNeighbourActivity.class);
 
     @Before
     public void setUp() {
-        if (mNeighbours != null )mNeighbours.clear();
-        if (mFavorites != null)mFavorites.clear();
-        mActivity = mActivityRule.getActivity();
         mService = DI.getNewInstanceApiService();
         mNeighbours = mService.getNeighbours();
+        if (mFavorites != null)mFavorites.clear();
+        mActivity = mActivityRule.getActivity();
         listNeighbours = onView(withId(R.id.list_neighbours));
-        mFavorites = mService.getFavorites();
         listFavorites = onView(withId(R.id.list_favorites));
     }
-
-
     /**
      * We ensure that our recyclerview is displaying at least one item
      */
@@ -97,7 +98,7 @@ public class NeighboursListTest {
         listNeighbours
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()))
                 // Then : the number of element is 11
-                .check(withItemCount(ITEMS_COUNT - 1));
+                .check(withItemCount(ITEMS_COUNT - 2));
         //and should be delete of favorite too
       listFavorites.check(withItemCount(0));
     }
