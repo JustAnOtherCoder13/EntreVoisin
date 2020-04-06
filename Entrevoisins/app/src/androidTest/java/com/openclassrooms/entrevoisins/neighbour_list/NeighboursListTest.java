@@ -74,7 +74,6 @@ public class NeighboursListTest {
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         addToFavListAndPressBackBtn();
         listFavorites.check(withItemCount(1));
-
         //Given : We remove the element at position 1 When perform a click on a delete icon
         listNeighbours
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()))
