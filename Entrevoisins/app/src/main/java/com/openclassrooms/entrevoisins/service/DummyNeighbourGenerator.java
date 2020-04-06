@@ -9,8 +9,8 @@ import java.util.List;
 abstract class DummyNeighbourGenerator {
 
     static List<Neighbour> DUMMY_NEIGHBOURS = Arrays.asList(
-            new Neighbour(1, "Caroline", "http://i.pravatar.cc/150?u=a042581f4e29026704d", "13800 Istres", "+33 6 ", "www.facebook.fr/", "",true),
-            new Neighbour(2, "Jack", "http://i.pravatar.cc/150?u=a042581f4e29026704e", "13580 La Fare-les-Oliviers", "+33 6 ", "www.facebook.fr/", "",true),
+            new Neighbour(1, "Caroline", "http://i.pravatar.cc/150?u=a042581f4e29026704d", "13800 Istres", "+33 6 ", "www.facebook.fr/", "",false),
+            new Neighbour(2, "Jack", "http://i.pravatar.cc/150?u=a042581f4e29026704e", "13580 La Fare-les-Oliviers", "+33 6 ", "www.facebook.fr/", "",false),
             new Neighbour(3, "Chloé", "http://i.pravatar.cc/150?u=a042581f4e29026704f", "13250 Saint-Chamas", "+33 6 ", "www.facebook.fr/", "",false),
             new Neighbour(4, "Vincent", "http://i.pravatar.cc/150?u=a042581f4e29026704a", "13250 Saint-Chamas", "+33 6 ", "www.facebook.fr/", "",false),
             new Neighbour(5, "Elodie", "http://i.pravatar.cc/150?u=a042581f4e29026704b", "13300 Salon-de-Provence", "+33 6 ", "www.facebook.fr/", "",false),
@@ -29,8 +29,6 @@ abstract class DummyNeighbourGenerator {
 
     //add an empty neighbour's list.
     static List<Neighbour> DUMMY_FAVORITE_NEIGHBOURS = Arrays.asList(
-            new Neighbour(1, "Caroline", "http://i.pravatar.cc/150?u=a042581f4e29026704d", "13800 Istres", "+33 6 ", "www.facebook.fr/", "",true),
-            new Neighbour(2, "Jack", "http://i.pravatar.cc/150?u=a042581f4e29026704e", "13580 La Fare-les-Oliviers", "+33 6 ", "www.facebook.fr/", "",true)
     );
 
     //return the list in ArrayList to perform changes.
