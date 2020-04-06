@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +59,6 @@ public class NeighbourFragment extends Fragment {
         mRecyclerView = (RecyclerView) view;
         mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
-
         initList();
         //use method to configure OnClickRecyclerView
         this.configureOnClickRecyclerView();
@@ -107,8 +105,8 @@ public class NeighbourFragment extends Fragment {
      */
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
-        boolean isNeighbourIsFav = event.neighbour.isFavorite();
-        if (isNeighbourIsFav) {
+        if (event.neighbour.isFavorite()) {
+
             mApiService.deleteFavorite(event.neighbour);
             event.neighbour.setFavorite(false);
         } else  {
@@ -116,8 +114,6 @@ public class NeighbourFragment extends Fragment {
         }
         mAdapter.notifyDataSetChanged();
     }
-
-
     /**
      * Fired if the user clicks on favorite button
      *

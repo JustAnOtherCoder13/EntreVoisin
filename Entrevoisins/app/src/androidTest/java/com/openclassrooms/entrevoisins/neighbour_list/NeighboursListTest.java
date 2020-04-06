@@ -1,9 +1,6 @@
 
 package com.openclassrooms.entrevoisins.neighbour_list;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.contrib.RecyclerViewActions;
 import android.support.test.filters.LargeTest;
@@ -17,7 +14,6 @@ import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 import com.openclassrooms.entrevoisins.ui.neighbour_list.ListNeighbourActivity;
 import com.openclassrooms.entrevoisins.utils.DeleteViewAction;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,14 +24,12 @@ import java.util.List;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
-import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.hasMinimumChildCount;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static com.openclassrooms.entrevoisins.utils.RecyclerViewItemCountAssertion.withItemCount;
-import static org.hamcrest.core.AllOf.allOf;
 
 
 /**
@@ -53,21 +47,23 @@ public class NeighboursListTest {
     List<Neighbour> mNeighbours;
     List<Neighbour> mFavorites;
     private NeighbourApiService mService;
-    private ViewInteraction listFavorites = onView(withId(R.id.list_favorites));
-    private ViewInteraction listNeighbours = onView(withId(R.id.list_neighbours));
+    private ViewInteraction listFavorites ;
+    private ViewInteraction listNeighbours;
 
-    @Rule
-    public ActivityTestRule<ListNeighbourActivity> mActivityRule =
-            new ActivityTestRule(ListNeighbourActivity.class);
+  @Rule
+  public ActivityTestRule<ListNeighbourActivity> mActivityRule =
+          new ActivityTestRule(ListNeighbourActivity.class,false,true);
 
     @Before
     public void setUp() {
-       /* if (mNeighbours != null )mNeighbours.clear();
-        if (mFavorites != null)mFavorites.clear();*/
+        if (mNeighbours != null )mNeighbours.clear();
+        if (mFavorites != null)mFavorites.clear();
         mActivity = mActivityRule.getActivity();
-        /*mService = DI.getNewInstanceApiService();
+        mService = DI.getNewInstanceApiService();
         mNeighbours = mService.getNeighbours();
-        mFavorites = mService.getFavorites();*/
+        listNeighbours = onView(withId(R.id.list_neighbours));
+        mFavorites = mService.getFavorites();
+        listFavorites = onView(withId(R.id.list_favorites));
     }
 
 
@@ -81,8 +77,8 @@ public class NeighboursListTest {
     }
 
     @Test
-    public void myFavoritesList_shouldBeEmpty() throws InterruptedException {
-        // First scroll to the position that needs to be matched and click on it.
+    public void myFavoritesList_shouldBeEmpty() {
+        // Ensure Favorites List is empty
         listFavorites.check(withItemCount(FAV_COUNT));
     }
 
@@ -94,14 +90,10 @@ public class NeighboursListTest {
         //
         listNeighbours
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
-        onView(withId(R.id.item_list_favorite_button))
-                .perform(click());
-        onView(withId(R.id.item_list_return_button))
-                .perform(click());
-
+        addToFavListAndPressBackBtn();
         listFavorites.check(withItemCount(1));
 
-        //Given : We remove the element at position 2 When perform a click on a delete icon
+        //Given : We remove the element at position 1 When perform a click on a delete icon
         listNeighbours
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, new DeleteViewAction()))
                 // Then : the number of element is 11
@@ -110,8 +102,15 @@ public class NeighboursListTest {
       listFavorites.check(withItemCount(0));
     }
 
+
     @Test
-    public void myFavoriteList_deleteAction_shouldRemoveItem_onlyInFavList() {
+    public void myFavoriteList_deleteAction_shouldRemoveItem() {
+
+        listNeighbours
+                .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
+        addToFavListAndPressBackBtn();
+
+        listFavorites.check(withItemCount(1));
 
         //swipe left
         onView(withId(R.id.container))
@@ -133,8 +132,7 @@ public class NeighboursListTest {
                 .check(matches(isDisplayed()));
         // ensure that the name in the textView is what we expected
         onView(withId(R.id.item_list_name))
-                .check(matches(withText("Chloé")));
-        //ensure that return button work well
+                .check(matches(withText("Jack")));
         onView(withId(R.id.item_list_return_button))
                 .perform(click());
     }
@@ -147,10 +145,7 @@ public class NeighboursListTest {
         //click on third neighbour
         listNeighbours.perform(RecyclerViewActions.actionOnItemAtPosition(2, click()));
         //and add it to fav list
-        onView(withId(R.id.item_list_favorite_button))
-                .perform(click());
-        onView(withId(R.id.item_list_return_button))
-                .perform(click());
+        addToFavListAndPressBackBtn();
         //swipe left
         onView(withId(R.id.container))
                 .perform(swipeLeft());
@@ -159,6 +154,13 @@ public class NeighboursListTest {
         //ensure we' ve had the good neighbour
                 .perform(RecyclerViewActions.actionOnItemAtPosition(0, click()));
         onView(withId(R.id.item_list_name))
-                .check(matches(withText("Vincent")));
+                .check(matches(withText("Chloé")));
     }
+    private void addToFavListAndPressBackBtn() {
+        onView(withId(R.id.item_list_favorite_button))
+                .perform(click());
+        onView(withId(R.id.item_list_return_button))
+                .perform(click());
+    }
+
 }
