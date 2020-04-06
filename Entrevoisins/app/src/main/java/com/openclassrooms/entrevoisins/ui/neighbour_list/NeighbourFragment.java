@@ -55,15 +55,20 @@ public class NeighbourFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_neighbour_list, container, false);
-        Context context = view.getContext();
-        mRecyclerView = (RecyclerView) view;
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+        initRecyclerView(view);
         initList();
         //use method to configure OnClickRecyclerView
         this.configureOnClickRecyclerView();
         return view;
     }
+
+    private void initRecyclerView(View view) {
+        Context context = view.getContext();
+        mRecyclerView = (RecyclerView) view;
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), DividerItemDecoration.VERTICAL));
+    }
+
     /**
      * Init the List of neighbours
      */
@@ -106,7 +111,6 @@ public class NeighbourFragment extends Fragment {
     @Subscribe
     public void onDeleteNeighbour(DeleteNeighbourEvent event) {
         if (event.neighbour.isFavorite()) {
-
             mApiService.deleteFavorite(event.neighbour);
             event.neighbour.setFavorite(false);
         } else  {

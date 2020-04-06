@@ -27,7 +27,6 @@ public class NeighbourServiceTest {
     @Before
     public void setup() { service = DI.getNewInstanceApiService();}
 
-
     @Test
     public void getNeighboursWithSuccess() {
         List<Neighbour> neighbours = service.getNeighbours();
@@ -44,7 +43,6 @@ public class NeighbourServiceTest {
 
     @Test
     public void deleteNeighbourWithSuccess() {
-
         Neighbour neighbourToDelete = service.getNeighbours().get(0);
         service.deleteNeighbour(neighbourToDelete);
         assertFalse(service.getNeighbours().contains(neighbourToDelete));
@@ -52,6 +50,7 @@ public class NeighbourServiceTest {
 
     @Test
     public void deleteFavoriteWithSuccess() {
+        service.addFavorite(service.getNeighbours().get(3));
         Neighbour favoriteToDelete = service.getFavorites().get(0);
         service.deleteFavorite(favoriteToDelete);
         assertFalse(service.getFavorites().contains(favoriteToDelete));

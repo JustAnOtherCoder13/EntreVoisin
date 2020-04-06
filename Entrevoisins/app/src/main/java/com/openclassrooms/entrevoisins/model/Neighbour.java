@@ -1,6 +1,5 @@
 package com.openclassrooms.entrevoisins.model;
 
-import java.util.Objects;
 /**
  * Model object representing a Neighbour
  */
@@ -96,18 +95,4 @@ public class Neighbour {
     public void setAboutMeTxt(String aboutMeTxt) { this.aboutMeTxt = aboutMeTxt; }
     public boolean isFavorite() { return isFavorite; }
     public void setFavorite(boolean favorite) { isFavorite = favorite; }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Neighbour neighbour = (Neighbour) o;
-        return Objects.equals(id, neighbour.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
 }

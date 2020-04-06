@@ -64,10 +64,7 @@ public class NeighbourActivityDetail extends AppCompatActivity {
         //bind and fill the view
         ButterKnife.bind(this);
         initView();
-        //use listener to close activity by clicking return button
-        mReturnButton.setOnClickListener(v -> backToMain());
-        //postSticky to get the post in memory since it is unregistered manually
-        mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().postSticky(new AddFavoriteEvent(mNeighbour,mFavoriteButton)));
+
     }
     private void initView() {
         mItemListName.setText(mNeighbour.getName());
@@ -80,6 +77,10 @@ public class NeighbourActivityDetail extends AppCompatActivity {
                 .load(mNeighbour.getAvatarUrl())
                 .fitCenter()
                 .into(mItemListAvatar);
+        //use listener to close activity by clicking return button
+        mReturnButton.setOnClickListener(v -> backToMain());
+        //postSticky to get the post in memory since it is unregistered manually
+        mFavoriteButton.setOnClickListener(v -> EventBus.getDefault().postSticky(new AddFavoriteEvent(mNeighbour)));
     }
     //method to catch the neighbour clicked
     private Neighbour getUser(int position, int page) {
